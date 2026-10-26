@@ -1,0 +1,2558 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>수능 미적분 개념 총정리 | 함수의 극한 · 미분 · 적분</title>
+<style>
+  :root{
+    --bg:#F6F8F7;
+    --panel:#FFFFFF;
+    --ink:#16233B;
+    --body:#33415C;
+    --muted:#6B7A90;
+    --line:#DCE6E2;
+    --line-soft:#E9EFED;
+    --c1:#2563EB;   /* 극한과 연속 - blue */
+    --c1-soft:#EAF1FE;
+    --c2:#059669;   /* 미분 - green */
+    --c2-soft:#E7F6EF;
+    --c3:#0D9488;   /* 적분 - teal */
+    --c3-soft:#E4F5F3;
+    --amber:#B45309;
+    --amber-soft:#FEF3E2;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Noto Sans KR","Malgun Gothic",system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--body);
+    line-height:1.62;
+  }
+  .math{
+    font-family:"Georgia","Times New Roman",serif;
+    font-style:italic;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    background:
+      linear-gradient(135deg, #101B30 0%, #16233B 55%, #0E2A28 100%);
+    color:#F3F6F5;
+    padding:56px 24px 44px;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+    background-size:34px 34px;
+    mask-image:linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,.15));
+  }
+  .hero-inner{position:relative; max-width:1180px; margin:0 auto;}
+  .hero-eyebrow{
+    font-size:13px; color:#8FD9C6; letter-spacing:.02em; margin:0 0 10px;
+  }
+  .hero h1{
+    font-size:clamp(26px,4vw,38px);
+    margin:0 0 12px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+  }
+  .hero p{ margin:0; color:#B9C6D9; font-size:15px; max-width:640px;}
+  .hero-curve{
+    position:absolute; right:-40px; bottom:-30px; width:340px; height:220px;
+    opacity:.9; pointer-events:none;
+  }
+  @media (max-width:720px){ .hero-curve{display:none;} }
+
+  /* ---------- LAYOUT ---------- */
+  .layout{
+    max-width:1180px; margin:0 auto;
+    display:grid;
+    grid-template-columns:250px 1fr;
+    gap:0;
+    align-items:start;
+  }
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr;}
+  }
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{
+    position:sticky; top:0;
+    height:100vh;
+    overflow-y:auto;
+    padding:22px 14px 40px 24px;
+    border-right:1px solid var(--line);
+    background:var(--bg);
+  }
+  @media (max-width:900px){
+    .sidebar{
+      position:static; height:auto; overflow:visible;
+      border-right:none; border-bottom:1px solid var(--line);
+      padding:16px 16px 8px;
+    }
+  }
+  .sidebar-title{
+    font-size:11px; color:var(--muted); letter-spacing:.06em;
+    margin:4px 0 12px; text-transform:uppercase;
+  }
+  .toc-chapter{margin-bottom:6px;}
+  .toc-chapter-head{
+    display:flex; align-items:center; gap:8px;
+    font-size:13.5px; font-weight:700; color:var(--ink);
+    padding:9px 10px; border-radius:8px; cursor:default;
+  }
+  .toc-dot{width:8px; height:8px; border-radius:50%; flex:0 0 auto;}
+  .toc-list{list-style:none; margin:2px 0 10px; padding:0 0 0 26px;}
+  .toc-list li{margin:1px 0;}
+  .toc-list a{
+    display:block;
+    font-size:12.8px; color:var(--muted); text-decoration:none;
+    padding:5px 8px; border-radius:6px; border-left:2px solid transparent;
+  }
+  .toc-list a:hover{ background:var(--line-soft); color:var(--ink);}
+  .toc-list a.active{
+    color:var(--ink); font-weight:700; background:var(--line-soft);
+  }
+
+  /* ---------- MAIN ---------- */
+  main{padding:36px 28px 100px;}
+  @media (max-width:600px){ main{padding:26px 16px 80px;} }
+
+  .chapter-banner{
+    display:flex; align-items:baseline; gap:12px;
+    margin:52px 0 22px; padding-top:6px;
+  }
+  .chapter-banner:first-of-type{margin-top:8px;}
+  .chapter-num{
+    font-size:13px; font-weight:700; color:#fff;
+    padding:4px 10px; border-radius:20px;
+  }
+  .chapter-banner h2{ margin:0; font-size:21px; color:var(--ink); font-weight:700;}
+  .chapter-sub{ margin:0 0 26px; color:var(--muted); font-size:13.5px;}
+
+  .concept{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px 24px;
+    margin-bottom:16px;
+    scroll-margin-top:18px;
+  }
+  .concept-head{
+    display:flex; align-items:center; gap:10px; margin-bottom:10px;
+  }
+  .concept-num{
+    font-size:12.5px; font-weight:800; color:#fff;
+    width:30px; height:30px; border-radius:9px;
+    display:flex; align-items:center; justify-content:center;
+    flex:0 0 auto;
+  }
+  .concept h3{ margin:0; font-size:17px; color:var(--ink); font-weight:700;}
+
+  .def{ font-size:14.5px; color:var(--body); }
+  .def p{ margin:0 0 8px; }
+  .def ul{ margin:6px 0 8px; padding-left:20px; }
+  .def li{ margin:3px 0; }
+
+  .formula{
+    background:var(--soft, #F3F6F5);
+    border-left:3px solid var(--accent, #999);
+    border-radius:0 8px 8px 0;
+    padding:10px 14px;
+    margin:10px 0;
+    font-size:15px;
+    overflow-x:auto;
+  }
+  .formula .math{color:var(--ink);}
+
+  details.example{
+    margin-top:12px;
+    border:1px dashed var(--line);
+    border-radius:10px;
+    background:#FBFDFC;
+    padding:0 14px;
+  }
+  details.example summary{
+    cursor:pointer;
+    list-style:none;
+    padding:11px 0;
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--accent,#333);
+    display:flex; align-items:center; gap:6px;
+  }
+  details.example summary::before{
+    content:"▸";
+    display:inline-block;
+    transition:transform .15s ease;
+    font-size:11px;
+  }
+  details.example[open] summary::before{ transform:rotate(90deg); }
+  .example-body{ padding:0 0 14px; font-size:14px; color:var(--body); }
+  .example-body p{margin:6px 0;}
+  .tag{
+    display:inline-block; font-size:11px; font-weight:700;
+    padding:2px 8px; border-radius:12px; margin-right:6px;
+  }
+  .tip{
+    margin-top:10px; font-size:13px; padding:9px 12px;
+    background:var(--amber-soft); color:#7C4A0A;
+    border-radius:8px; border-left:3px solid var(--amber);
+  }
+
+  /* chapter accent bindings */
+  .ch1 .concept-num, .ch1 .toc-dot, .ch1 .chapter-num{background:var(--c1);}
+  .ch1 .formula{--soft:var(--c1-soft); --accent:var(--c1);}
+  .ch1 details.example summary{--accent:var(--c1); color:var(--c1);}
+  .ch1 .concept{border-top:3px solid var(--c1);}
+
+  .ch2 .concept-num, .ch2 .toc-dot, .ch2 .chapter-num{background:var(--c2);}
+  .ch2 .formula{--soft:var(--c2-soft); --accent:var(--c2);}
+  .ch2 details.example summary{--accent:var(--c2); color:var(--c2);}
+  .ch2 .concept{border-top:3px solid var(--c2);}
+
+  .ch3 .concept-num, .ch3 .toc-dot, .ch3 .chapter-num{background:var(--c3);}
+  .ch3 .formula{--soft:var(--c3-soft); --accent:var(--c3);}
+  .ch3 details.example summary{--accent:var(--c3); color:var(--c3);}
+  .ch3 .concept{border-top:3px solid var(--c3);}
+
+  footer{
+    text-align:center; color:var(--muted); font-size:12.5px;
+    padding:24px; border-top:1px solid var(--line);
+  }
+
+  /* ---------- INTRO ---------- */
+  .intro{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    background:
+      radial-gradient(ellipse 70% 55% at 50% 0%, rgba(77,208,177,.10), transparent 60%),
+      linear-gradient(160deg, #0B1220 0%, #101B30 42%, #0E2A28 100%);
+    color:#F3F6F5;
+    overflow:hidden;
+    padding:48px 24px;
+    text-align:center;
+  }
+  .intro::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+    background-size:38px 38px;
+    mask-image:radial-gradient(ellipse 80% 70% at 50% 40%, rgba(0,0,0,.85), transparent 75%);
+  }
+  .intro-voyage{
+    position:absolute; inset:0; width:100%; height:100%;
+    pointer-events:none;
+  }
+  .intro-voyage path{
+    fill:none;
+    stroke:#3FCBAF;
+    stroke-width:1.4;
+    opacity:0;
+    stroke-dasharray:900;
+    stroke-dashoffset:900;
+    animation:voyage-draw 4.6s ease-out .3s infinite;
+  }
+  .intro-voyage circle{
+    opacity:0;
+    animation:voyage-dot 1.2s ease-out 3.2s forwards;
+  }
+  @keyframes voyage-draw{
+    0%{opacity:0; stroke-dashoffset:900;}
+    20%{opacity:.9;}
+    65%{opacity:.55; stroke-dashoffset:0;}
+    85%{opacity:.55; stroke-dashoffset:0;}
+    100%{opacity:0; stroke-dashoffset:900;}
+  }
+  @keyframes voyage-dot{
+    0%{opacity:0; r:0;}
+    60%{opacity:1; r:5;}
+    100%{opacity:.9; r:3.5;}
+  }
+  .intro-inner{
+    position:relative;
+    max-width:720px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    opacity:0;
+    animation:intro-rise 1.1s ease-out .4s forwards;
+  }
+  @keyframes intro-rise{
+    0%{opacity:0; transform:translateY(14px);}
+    100%{opacity:1; transform:translateY(0);}
+  }
+  .intro-mark{
+    width:34px; height:34px;
+    margin-bottom:26px;
+    opacity:.85;
+  }
+  .intro-eyebrow{
+    font-size:12.5px;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:#8FD9C6;
+    margin:0 0 28px;
+  }
+  .intro-quote{
+    font-family:"Georgia","Times New Roman",serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(22px,4.4vw,34px);
+    line-height:1.55;
+    color:#F3F6F5;
+    margin:0 0 22px;
+    letter-spacing:-0.01em;
+  }
+  .intro-quote::before{ content:"“"; color:#4DD0B1; }
+  .intro-quote::after{ content:"”"; color:#4DD0B1; }
+  .intro-source{
+    font-size:13.5px;
+    color:#8FA0BC;
+    letter-spacing:.04em;
+    margin:0 0 46px;
+  }
+  .intro-source::before{
+    content:"";
+    display:inline-block;
+    width:26px; height:1px;
+    background:#4DD0B1;
+    margin-right:10px;
+    vertical-align:middle;
+  }
+  .intro-title{
+    font-size:clamp(20px,3vw,25px);
+    font-weight:700;
+    color:#FFFFFF;
+    margin:0 0 10px;
+    letter-spacing:-0.01em;
+  }
+  .intro-sub{
+    font-size:14px;
+    color:#B9C6D9;
+    max-width:460px;
+    margin:0 0 40px;
+    line-height:1.7;
+  }
+  .intro-scroll{
+    position:relative;
+    display:inline-flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    color:#8FD9C6;
+    font-size:12px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    opacity:0;
+    animation:intro-rise .9s ease-out 1.3s forwards;
+  }
+  .intro-scroll-line{
+    width:1px; height:24px;
+    background:linear-gradient(#4DD0B1, transparent);
+  }
+  .intro-scroll-arrow{
+    width:14px; height:14px;
+    animation:intro-bob 1.6s ease-in-out infinite;
+  }
+  @keyframes intro-bob{
+    0%,100%{ transform:translateY(0); opacity:.6; }
+    50%{ transform:translateY(7px); opacity:1; }
+  }
+  @media (max-width:600px){
+    .intro{ min-height:100svh; padding:40px 20px; }
+    .intro-quote{ font-size:20px; }
+  }
+
+  /* mobile chapter jump bar */
+  .mobile-jump{
+    display:none;
+    gap:8px; padding:10px 16px; overflow-x:auto;
+    border-bottom:1px solid var(--line); background:var(--panel);
+  }
+  .mobile-jump a{
+    flex:0 0 auto; font-size:12.5px; font-weight:700; color:#fff;
+    padding:7px 12px; border-radius:20px; text-decoration:none; white-space:nowrap;
+  }
+  @media (max-width:900px){ .mobile-jump{display:flex;} }
+
+/* ===== 인터랙티브 · 애니메이션 추가 ===== */
+
+/* ================= 인터랙티브 + 애니메이션 레이어 (추가) ================= */
+.frac{ display:inline-flex; flex-direction:column; vertical-align:middle; text-align:center; margin:0 3px; line-height:1.05; font-size:.94em; }
+.frac .num{ border-bottom:1.3px solid currentColor; padding:0 4px 2px; }
+.frac .den{ padding:2px 4px 0; }
+
+/* ---------- 체험 그림 ---------- */
+.concept-figure.is-live{ width:100%; display:flex; flex-direction:column; align-items:center; gap:2px; background:#FBFDFC; border:1.5px solid var(--line); border-radius:16px; padding:14px 12px 12px; margin:8px 0 16px; }
+.concept-figure.is-live svg{ width:100%; max-width:400px; height:auto; overflow:visible; touch-action:manipulation; }
+.lab text{ font-family:"Noto Sans KR","Malgun Gothic",system-ui,sans-serif; font-style:normal; }
+.lab text.i{ font-family:"Georgia","Times New Roman",serif; font-style:italic; }
+.lab.pending{ min-height:150px; }
+.lab .ok{ color:#059669; font-weight:700; }
+.lab .bad-t{ color:#DC2626; font-weight:700; }
+.lab .dim{ color:var(--muted); font-size:12px; }
+.live-badge{ display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:#fff; background:var(--accent-ui,#888); border-radius:7px; padding:4px 11px; margin-bottom:8px; letter-spacing:.02em; }
+.live-badge::before{ content:"◆"; font-size:8px; animation:popDot 1.6s ease infinite; }
+.figure-controls{ display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; justify-content:center; margin-top:10px; font-size:12.5px; color:var(--body); }
+.figure-controls label{ display:flex; align-items:center; gap:7px; white-space:nowrap; }
+.figure-controls input[type=range]{ width:110px; accent-color:var(--accent-ui,#333); vertical-align:middle; cursor:pointer; }
+.live-val{ font-weight:700; color:var(--ink); font-family:"Georgia","Times New Roman",serif; font-style:italic; min-width:26px; display:inline-block; text-align:center; }
+.drag-hint{ font-size:11.5px; color:var(--muted); text-align:center; margin:6px 0 0; }
+.live-readout{ width:100%; max-width:440px; font-size:12.8px; color:var(--body); text-align:center; margin:8px 0 0; background:var(--soft-ui,#F3F6F5); border:1.5px solid var(--line-soft); border-radius:10px; padding:9px 12px; line-height:1.7; }
+.live-readout b{ color:var(--ink); }
+.live-readout .math{ font-size:13.5px; }
+.drag-handle{ cursor:grab; touch-action:none; }
+.drag-handle:active{ cursor:grabbing; }
+.sim-btn{ font:inherit; font-size:12.5px; font-weight:700; color:#fff; background:var(--accent-ui,#888); border:none; border-radius:9px; padding:8px 14px; cursor:pointer; box-shadow:0 3px 0 rgba(22,35,59,.22); transition:transform .1s ease, box-shadow .1s ease; }
+.sim-btn:active{ transform:translateY(2px); box-shadow:0 1px 0 rgba(22,35,59,.22); }
+.sim-btn.ghost{ background:#fff; color:var(--accent-ui,#888); border:1.5px solid var(--accent-ui,#888); box-shadow:0 3px 0 var(--line); }
+.sim-btn:disabled{ opacity:.45; cursor:default; box-shadow:none; }
+button:focus-visible, a:focus-visible, input:focus-visible, [role=button]:focus-visible{ outline:3px solid #93B4FF; outline-offset:2px; }
+
+.tabs{ display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin:4px 0 10px; }
+.tab{ font:inherit; font-size:12.5px; font-weight:700; padding:6px 13px; border-radius:999px; border:1.5px solid var(--line); background:#fff; color:var(--body); cursor:pointer; transition:background .15s ease, color .15s ease, transform .1s ease; }
+.tab:hover{ background:var(--line-soft); }
+.tab:active{ transform:scale(.96); }
+.tab[aria-pressed=true]{ background:var(--accent-ui,#333); border-color:var(--accent-ui,#333); color:#fff; }
+
+.lights{ display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin:10px 0 2px; }
+.light{ font-size:12px; font-weight:700; padding:5px 11px 5px 9px; border-radius:999px; border:1.5px solid var(--line); background:#fff; color:var(--muted); display:inline-flex; align-items:center; gap:6px; transition:all .2s ease; }
+.light::before{ content:""; width:9px; height:9px; border-radius:50%; background:#CBD5E1; transition:background .2s ease; }
+.light.on{ border-color:#059669; background:#E7F6EF; color:#047857; }
+.light.on::before{ background:#059669; box-shadow:0 0 0 3px rgba(5,150,105,.2); }
+
+.stepbox{ width:100%; max-width:440px; background:#fff; border:1.5px solid var(--line); border-radius:14px; padding:12px 14px; margin:2px 0 6px; font-size:13.5px; }
+.step-title{ font-size:14px; padding-bottom:8px; margin-bottom:6px; border-bottom:1px dashed var(--line); }
+.step-line{ display:flex; gap:9px; padding:6px 0; }
+.step-line.new{ animation:fadeIn .4s ease; }
+.step-no{ flex:0 0 22px; height:22px; border-radius:50%; background:var(--accent-ui); color:#fff; font-size:11.5px; font-weight:800; display:flex; align-items:center; justify-content:center; margin-top:1px; }
+.step-body{ flex:1; min-width:0; }
+.step-note{ font-size:12.3px; color:var(--muted); margin-top:2px; }
+@media (max-width:600px){ .concept-figure.is-live{ padding:12px 8px; } }
+
+/* ---------- 공통 키프레임 ---------- */
+@keyframes fadeInDown{ from{ opacity:0; transform:translateY(-14px);} to{ opacity:1; transform:translateY(0);} }
+@keyframes fadeIn{ from{opacity:0;} to{opacity:1;} }
+@keyframes popDot{ 0%{transform:scale(1);} 50%{transform:scale(1.55);} 100%{transform:scale(1);} }
+@keyframes introPopUp{ from{ opacity:0; transform:translateY(12px) scale(.94); } to{ opacity:1; transform:translateY(0) scale(1); } }
+
+/* ---------- 스크롤 진행바 ---------- */
+#scroll-progress{ position:fixed; top:0; left:0; height:3px; width:0%; background:linear-gradient(90deg, var(--c1), var(--c2), var(--c3)); z-index:999; }
+
+/* ---------- 등장(리빌) 효과 ---------- */
+.js .concept, .js .chapter-banner, .js .chapter-sub{ opacity:0; transform:translateY(18px); transition:opacity .55s cubic-bezier(.22,.61,.36,1), transform .55s cubic-bezier(.22,.61,.36,1), box-shadow .25s ease; }
+.js .concept.in-view, .js .chapter-banner.in-view, .js .chapter-sub.in-view{ opacity:1; transform:translateY(0); }
+.concept:hover{ box-shadow:0 10px 26px -14px rgba(22,35,59,.22); }
+.concept-num{ transition:transform .25s ease; }
+.concept:hover .concept-num{ transform:scale(1.1) rotate(-4deg); }
+.toc-dot{ transition:transform .25s ease; }
+.toc-chapter-head:hover .toc-dot{ animation:popDot .5s ease; }
+.toc-list a{ transition:background .2s ease, color .2s ease, padding-left .2s ease; }
+.toc-list a:hover{ padding-left:11px; }
+.mobile-jump a{ transition:transform .15s ease; }
+.mobile-jump a:active{ transform:scale(.95); }
+.example-body.fade-in{ animation:fadeIn .35s ease; }
+.tip{ transition:transform .2s ease; }
+.concept:hover .tip{ transform:translateX(3px); }
+
+/* ---------- 히어로 ---------- */
+.js .hero-inner > *{ opacity:0; }
+.js .hero.play .hero-inner > *{ animation:fadeInDown .7s ease forwards; }
+.js .hero.play .hero-eyebrow{ animation-delay:.05s; }
+.js .hero.play h1{ animation-delay:.15s; }
+.js .hero.play p{ animation-delay:.25s; }
+.js .hero-curve{ opacity:0; }
+.js .hero.play .hero-curve{ animation:fadeIn 1s ease .35s forwards; }
+
+/* ---------- 인트로 장식 ---------- */
+.intro-inner{ z-index:2; }
+.intro-orb{ position:absolute; border-radius:50%; filter:blur(6px); pointer-events:none; will-change:transform; z-index:0; }
+.intro-orb-1{ width:560px; height:560px; left:-8%; top:-12%; background:radial-gradient(circle, rgba(37,99,235,.50), transparent 68%); animation:introDrift1 13s ease-in-out infinite; }
+.intro-orb-2{ width:520px; height:520px; right:-8%; top:6%; background:radial-gradient(circle, rgba(5,150,105,.45), transparent 68%); animation:introDrift2 16s ease-in-out infinite; }
+.intro-orb-3{ width:600px; height:600px; left:22%; bottom:-24%; background:radial-gradient(circle, rgba(13,148,136,.45), transparent 68%); animation:introDrift3 18s ease-in-out infinite; }
+@keyframes introDrift1{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(9%,12%) scale(1.15); } }
+@keyframes introDrift2{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(-11%,9%) scale(1.12); } }
+@keyframes introDrift3{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(8%,-11%) scale(1.18); } }
+.intro::before{ animation:introGridPulse 6s ease-in-out infinite; }
+@keyframes introGridPulse{ 0%,100%{ opacity:.75; } 50%{ opacity:1; } }
+.intro-symbol{ position:absolute; font-family:"Georgia","Times New Roman",serif; font-style:italic; color:rgba(255,255,255,.22); pointer-events:none; user-select:none; z-index:1; animation:introFloatUp linear infinite; }
+@keyframes introFloatUp{ 0%{ transform:translateY(0) rotate(0deg); opacity:0; } 10%{ opacity:1; } 90%{ opacity:1; } 100%{ transform:translateY(-92vh) rotate(12deg); opacity:0; } }
+.intro-badges{ display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin:-8px 0 26px; }
+.intro-badge{ display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; color:#EDEFF7; padding:8px 14px 8px 10px; border-radius:999px; background:rgba(255,255,255,.055); border:1px solid rgba(255,255,255,.10); opacity:0; animation:introPopUp .5s cubic-bezier(.22,.61,.36,1) forwards; }
+.intro-badge .chip{ width:9px; height:9px; border-radius:50%; flex:0 0 auto; }
+.intro-badge:nth-child(1){ animation-delay:1.0s; }
+.intro-badge:nth-child(2){ animation-delay:1.1s; }
+.intro-badge:nth-child(3){ animation-delay:1.2s; }
+.intro-stats{ display:flex; justify-content:center; margin:0 0 34px; border-top:1px solid rgba(255,255,255,.12); border-bottom:1px solid rgba(255,255,255,.12); padding:20px 0; }
+.intro-stat{ padding:0 26px; opacity:0; animation:introPopUp .5s cubic-bezier(.22,.61,.36,1) forwards; }
+.intro-stat + .intro-stat{ border-left:1px solid rgba(255,255,255,.12); }
+.intro-stat:nth-child(1){ animation-delay:1.3s; }
+.intro-stat:nth-child(2){ animation-delay:1.4s; }
+.intro-stat:nth-child(3){ animation-delay:1.5s; }
+.intro-stat b{ display:block; font-size:clamp(24px,4vw,32px); font-weight:800; color:#fff; line-height:1; }
+.intro-stat span{ display:block; margin-top:6px; font-size:12px; color:#9FADC4; letter-spacing:.02em; }
+@media (max-width:600px){ .intro-stat{ padding:0 14px; } }
+
+@media (prefers-reduced-motion: reduce){
+  .js .concept, .js .chapter-banner, .js .chapter-sub{ opacity:1 !important; transform:none !important; transition:none !important; }
+  .js .hero-inner > *, .js .hero-curve{ opacity:1 !important; animation:none !important; }
+  .intro-orb, .intro-symbol, .intro::before{ animation:none !important; }
+  .intro-badge, .intro-stat{ opacity:1 !important; animation:none !important; }
+  .live-badge::before{ animation:none !important; }
+}
+
+</style>
+<script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+
+<section class="intro" id="intro">
+  <svg class="intro-voyage" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+    <path d="M -50 620 C 150 520, 260 700, 430 560 C 600 420, 680 660, 860 520 C 1000 410, 1080 540, 1250 460" />
+    <circle cx="430" cy="560" r="3.5" fill="#8FD9C6"/>
+    <circle cx="860" cy="520" r="3.5" fill="#8FD9C6"/>
+  </svg>
+
+  <div class="intro-inner">
+    <svg class="intro-mark" viewBox="0 0 34 34" fill="none">
+      <path d="M4 26 C 8 10, 14 8, 17 17 C 20 26, 26 24, 30 10" stroke="#4DD0B1" stroke-width="1.6"/>
+      <circle cx="17" cy="17" r="1.8" fill="#8FD9C6"/>
+    </svg>
+
+    <p class="intro-eyebrow">Before We Begin</p>
+
+    <p class="intro-quote">멀리 가는 사람은 길을 잃는 시간도 견딘다</p>
+    <p class="intro-source">오디세이 · Odyssey</p>
+
+    <h1 class="intro-title">함수의 극한 · 미분 · 적분</h1>
+    <p class="intro-sub">막히는 순간, 헤매는 시간도 결국 항해의 일부입니다.<br>정의에서 시작해 공식을 지나 예제에 닿기까지 — 그 여정을 따라가 봅시다.</p>
+
+    <a href="#hero" class="intro-scroll">
+      <span>Start</span>
+      <span class="intro-scroll-line"></span>
+      <svg class="intro-scroll-arrow" viewBox="0 0 24 24" fill="none" stroke="#4DD0B1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 9 L12 15 L18 9"/>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<div class="hero" id="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">상무고 유환수 작성 · 미적분 1 개념 총정리</p>
+    <h1>함수의 극한 · 미분 · 적분</h1>
+    <p>대단원별로 다시 묶은 30개 핵심 개념. 정의 → 공식 → 예제 순으로 확인하고, 예제는 먼저 스스로 풀어본 뒤 펼쳐보세요.</p>
+  </div>
+  <svg class="hero-curve" viewBox="0 0 340 220" fill="none">
+    <path d="M10 200 C 80 40, 120 20, 170 110 C 220 200, 260 40, 330 10" stroke="#4DD0B1" stroke-width="2.5" opacity="0.85"/>
+    <path d="M10 170 L 330 170" stroke="#3A4B66" stroke-width="1"/>
+    <path d="M40 20 L 40 210" stroke="#3A4B66" stroke-width="1"/>
+    <circle cx="170" cy="110" r="4" fill="#8FD9C6"/>
+  </svg>
+</div>
+
+<div class="mobile-jump">
+  <a href="#ch1" style="background:#2563EB;">① 극한과 연속</a>
+  <a href="#ch2" style="background:#059669;">② 미분</a>
+  <a href="#ch3" style="background:#0D9488;">③ 적분</a>
+</div>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <p class="sidebar-title">목차</p>
+
+    <div class="toc-chapter">
+      <div class="toc-chapter-head"><span class="toc-dot" style="background:#2563EB;"></span>Ⅰ. 함수의 극한과 연속</div>
+      <ul class="toc-list">
+        <li><a href="#c1">#1 함수의 극한</a></li>
+        <li><a href="#c2">#2 우극한과 좌극한</a></li>
+        <li><a href="#c3">#3 극한값의 성질</a></li>
+        <li><a href="#c4">#4 극한값의 계산</a></li>
+        <li><a href="#c5">#5 극한의 대소 관계</a></li>
+        <li><a href="#c6">#6 함수의 연속</a></li>
+        <li><a href="#c7">#7 연속함수와 구간</a></li>
+        <li><a href="#c8">#8 연속함수의 성질</a></li>
+        <li><a href="#c9">#9 최대·최소의 정리</a></li>
+        <li><a href="#c10">#10 사잇값 정리</a></li>
+      </ul>
+    </div>
+
+    <div class="toc-chapter">
+      <div class="toc-chapter-head"><span class="toc-dot" style="background:#059669;"></span>Ⅱ. 미분</div>
+      <ul class="toc-list">
+        <li><a href="#c11">#11 평균변화율</a></li>
+        <li><a href="#c12">#12 미분계수</a></li>
+        <li><a href="#c13">#13 도함수</a></li>
+        <li><a href="#c14">#14 xⁿ의 도함수</a></li>
+        <li><a href="#c15">#15 다항함수의 미분법</a></li>
+        <li><a href="#c16">#16~17 접선의 방정식</a></li>
+        <li><a href="#c18">#18 롤의 정리</a></li>
+        <li><a href="#c19">#19 평균값 정리</a></li>
+        <li><a href="#c20">#20 함수의 증가·감소</a></li>
+        <li><a href="#c21">#21 극대와 극소</a></li>
+        <li><a href="#c22">#22 그래프와 응용</a></li>
+        <li><a href="#c23">#23 속도와 가속도</a></li>
+      </ul>
+    </div>
+
+    <div class="toc-chapter">
+      <div class="toc-chapter-head"><span class="toc-dot" style="background:#0D9488;"></span>Ⅲ. 적분</div>
+      <ul class="toc-list">
+        <li><a href="#c24">#24 부정적분</a></li>
+        <li><a href="#c25">#25 부정적분의 계산</a></li>
+        <li><a href="#c26">#26 정적분</a></li>
+        <li><a href="#c27">#27 미적분의 기본정리</a></li>
+        <li><a href="#c28">#28 정적분의 성질</a></li>
+        <li><a href="#c29">#29 도형의 넓이</a></li>
+        <li><a href="#c30">#30 속도와 거리</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+
+  <!-- ================= CHAPTER 1 ================= -->
+  <div id="ch1" class="ch1">
+    <div class="chapter-banner">
+      <span class="chapter-num">Ⅰ</span>
+      <h2>함수의 극한과 연속</h2>
+    </div>
+    <p class="chapter-sub">함숫값이 어디로 가까워지는지를 다루는 단원. 극한의 정의부터 사잇값 정리까지, 이후 미분·적분의 토대가 되는 개념입니다.</p>
+
+    <section class="concept" id="c1">
+      <div class="concept-head"><span class="concept-num">1</span><h3>함수의 극한</h3></div>
+      <div class="def">
+        <p><span class="math">x</span>의 값이 <span class="math">a</span>가 아니면서 <span class="math">a</span>에 한없이 가까워질 때, <span class="math">f(x)</span>의 값이 일정한 값 <span class="math">L</span>에 한없이 가까워지면 "<span class="math">f(x)</span>는 <span class="math">L</span>에 수렴한다"고 한다.</p>
+        <div class="formula"><span class="math">lim<sub>x→a</sub> f(x) = L</span></div>
+        <p><b>발산:</b> <span class="math">x→a</span>일 때 <span class="math">f(x)</span>가 한없이 커지면 양의 무한대로 발산 (<span class="math">lim f(x)=+∞</span>), 음수이면서 절댓값이 한없이 커지면 음의 무한대로 발산 (<span class="math">lim f(x)=-∞</span>).</p>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">lim<sub>x→2</sub> (x²+3x-1)</span>의 값은?</p>
+          <p><b>A.</b> 다항함수는 모든 실수에서 연속이므로 극한값은 함숫값과 같다. <span class="math">2²+3(2)-1 = 9</span></p>
+        </div>
+      </details>
+      <div class="tip">극한은 <span class="math">x</span>가 <span class="math">a</span>에 "가까워질 때"의 이야기이며, <span class="math">x=a</span>에서의 실제 함숫값과는 무관하다. <span class="math">f(a)</span>가 정의되지 않아도 극한값은 존재할 수 있다.</div>
+    </section>
+
+    <section class="concept" id="c2">
+      <div class="concept-head"><span class="concept-num">2</span><h3>함수의 우극한과 좌극한</h3></div>
+      <div class="def">
+        <p><b>우극한:</b> <span class="math">x</span>가 <span class="math">a</span>보다 큰 값에서 <span class="math">a</span>에 가까워질 때의 극한.</p>
+        <div class="formula"><span class="math">lim<sub>x→a+</sub> f(x) = L</span></div>
+        <p><b>좌극한:</b> <span class="math">x</span>가 <span class="math">a</span>보다 작은 값에서 <span class="math">a</span>에 가까워질 때의 극한.</p>
+        <div class="formula"><span class="math">lim<sub>x→a-</sub> f(x) = L</span></div>
+        <p><b>극한의 존재 조건:</b> 극한값이 <span class="math">L</span>이려면 좌극한과 우극한이 모두 존재하고 그 값이 같아야 한다.</p>
+        <div class="formula"><span class="math">lim<sub>x→a+</sub> f(x) = lim<sub>x→a-</sub> f(x) = L ⇔ lim<sub>x→a</sub> f(x) = L</span></div>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">f(x) = x/|x|</span>일 때 <span class="math">lim<sub>x→0</sub> f(x)</span>가 존재하는지 확인하시오.</p>
+          <p><b>A.</b> 우극한: <span class="math">x&gt;0</span>이면 <span class="math">f(x)=1</span>이므로 극한값 1. 좌극한: <span class="math">x&lt;0</span>이면 <span class="math">f(x)=-1</span>이므로 극한값 -1. 좌극한 ≠ 우극한이므로 <span class="math">lim<sub>x→0</sub> f(x)</span>는 존재하지 않는다.</p>
+        </div>
+      </details>
+      <div class="tip">시험에서 조각함수(구간별 정의)가 나오면 반드시 좌극한·우극한을 나눠서 확인!</div>
+    </section>
+
+    <section class="concept" id="c3">
+      <div class="concept-head"><span class="concept-num">3</span><h3>함수의 극한값의 성질</h3></div>
+      <div class="def">
+        <p><span class="math">lim<sub>x→a</sub> f(x)=L, lim<sub>x→a</sub> g(x)=M</span> (<span class="math">L, M</span>은 실수)일 때:</p>
+        <ul>
+          <li><span class="math">lim kf(x) = kL</span> (<span class="math">k</span>는 상수)</li>
+          <li><span class="math">lim {f(x)+g(x)} = L+M</span>, <span class="math">lim {f(x)-g(x)} = L-M</span></li>
+          <li><span class="math">lim f(x)g(x) = LM</span></li>
+          <li><span class="math">lim f(x)/g(x) = L/M</span> (단, <span class="math">M≠0</span>)</li>
+        </ul>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">lim<sub>x→1</sub> f(x) = 4</span>, <span class="math">lim<sub>x→1</sub> g(x) = 2</span>일 때, <span class="math">lim<sub>x→1</sub> {f(x)g(x)-3f(x)}/g(x)</span>의 값은?</p>
+          <p><b>A.</b> 각 극한값이 실수로 존재하므로 그대로 대입: <span class="math">{(4)(2)-3(4)}/2 = (8-12)/2 = -2</span></p>
+        </div>
+      </details>
+      <div class="tip">이 성질은 <b>극한값이 각각 실수로 존재할 때만</b> 사용 가능. ∞ 꼴이 섞이면 바로 적용 불가 → #4의 변형이 필요.</div>
+    </section>
+
+    <section class="concept" id="c4">
+      <div class="concept-head"><span class="concept-num">4</span><h3>함수의 극한값의 계산</h3></div>
+      <div class="def">
+        <ul>
+          <li><b>0/0 꼴</b> — 유리함수: 분모·분자 인수분해 후 약분. 무리함수: 근호가 있는 쪽을 유리화.</li>
+          <li><b>∞/∞ 꼴</b> — 분모의 최고차항으로 분모·분자를 나눈다. (무리식은 근호 안 차수를 절반으로 생각)</li>
+          <li><b>∞-∞ 꼴</b> — 다항식은 최고차항으로 묶고, 무리식은 유리화한다.</li>
+          <li><b>∞×0 꼴</b> — 변형하여 0/0 또는 ∞/∞ 꼴로 바꾼다.</li>
+        </ul>
+        <p><b>미정계수의 결정</b></p>
+        <div class="formula">
+          <span class="math">lim<sub>x→a</sub> f(x)/(x-a) = k</span> (실수)이고 <span class="math">lim<sub>x→a</sub>(x-a)=0</span>이면 <span class="math">lim<sub>x→a</sub> f(x) = 0</span><br>
+          <span class="math">lim<sub>x→a</sub> f(x)/(x-a) = k</span> (0이 아닌 실수)이고 <span class="math">lim<sub>x→a</sub> f(x) = 0</span>이면 <span class="math">a</span>는 <span class="math">f(x)=0</span>의 근
+        </div>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">lim<sub>x→1</sub> (x²-1)/(x-1)</span></p>
+          <p><b>A.</b> 인수분해: <span class="math">(x-1)(x+1)/(x-1) = x+1</span> (단, <span class="math">x≠1</span>이므로 약분 가능). <span class="math">x→1</span>이면 값은 <b>2</b>.</p>
+        </div>
+      </details>
+      <div class="tip">약분은 항상 <span class="math">x≠a</span>라는 전제에서만 허용된다. 대입은 인수분해·유리화가 끝난 <b>뒤에</b> 해야 하며, 정리 전에 바로 대입하면 0/0 또는 ∞/∞인지 모른 채 틀린 값을 얻기 쉽다.</div>
+    </section>
+
+    <section class="concept" id="c5">
+      <div class="concept-head"><span class="concept-num">5</span><h3>함수의 극한의 대소 관계</h3></div>
+      <div class="def">
+        <p><span class="math">a</span>에 가까운 모든 <span class="math">x</span>에 대해 <span class="math">f(x)≤g(x)</span>이고 두 극한이 존재하면:</p>
+        <div class="formula"><span class="math">lim<sub>x→a</sub> f(x) ≤ lim<sub>x→a</sub> g(x)</span></div>
+        <p><b>샌드위치(조임) 정리:</b> <span class="math">f(x)≤h(x)≤g(x)</span>이고 <span class="math">lim f(x) = lim g(x) = L</span>이면</p>
+        <div class="formula"><span class="math">lim<sub>x→a</sub> h(x) = L</span></div>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> 모든 실수 <span class="math">x</span>에 대해 <span class="math">2x-1 ≤ f(x) ≤ x²+2x-2</span>가 성립할 때, <span class="math">lim<sub>x→1</sub> f(x)</span>의 값은?</p>
+          <p><b>A.</b> <span class="math">lim<sub>x→1</sub>(2x-1) = 1</span>, <span class="math">lim<sub>x→1</sub>(x²+2x-2) = 1</span>로 양쪽 극한이 모두 1이므로 샌드위치 정리에 의해 <span class="math">lim<sub>x→1</sub> f(x) = 1</span></p>
+        </div>
+      </details>
+      <div class="tip">직접 계산이 안 되는 식(삼각함수 등)을 부등식으로 위아래에서 눌러 극한을 구할 때 사용.</div>
+    </section>
+
+    <section class="concept" id="c6">
+      <div class="concept-head"><span class="concept-num">6</span><h3>함수의 연속</h3></div>
+      <div class="def">
+        <p>함수 <span class="math">f</span>가 실수 <span class="math">a</span>에서 다음을 모두 만족하면 <span class="math">x=a</span>에서 연속:</p>
+        <ul>
+          <li><span class="math">f(a)</span>가 정의되어 있고</li>
+          <li>극한값 <span class="math">lim<sub>x→a</sub> f(x)</span>가 존재하며</li>
+          <li><span class="math">lim<sub>x→a</sub> f(x) = f(a)</span></li>
+        </ul>
+        <p><b>불연속인 경우:</b> ① <span class="math">f(a)</span>가 없음 ② 극한값이 존재하지 않음 ③ 극한값과 함숫값이 존재하지만 서로 다름 (<span class="math">lim f(x) ≠ f(a)</span>)</p>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">f(x) = (x²-4)/(x-2)</span> (<span class="math">x≠2</span>), <span class="math">f(2)=k</span>로 정의된 함수가 <span class="math">x=2</span>에서 연속이 되도록 하는 <span class="math">k</span>의 값은?</p>
+          <p><b>A.</b> <span class="math">lim<sub>x→2</sub> f(x) = lim<sub>x→2</sub> (x+2) = 4</span>. 연속이려면 <span class="math">f(2)=lim f(x)</span>이어야 하므로 <span class="math">k=4</span></p>
+        </div>
+      </details>
+      <div class="tip">조각함수(구간별로 다르게 정의된 함수)의 연속성은 경계점에서 <b>좌극한=우극한=함숫값</b> 세 가지가 모두 같은지 순서대로 확인하는 것이 실수를 줄이는 방법이다.</div>
+    </section>
+
+    <section class="concept" id="c7">
+      <div class="concept-head"><span class="concept-num">7</span><h3>연속함수와 구간</h3></div>
+      <div class="def">
+        <p>함수가 어떤 구간의 모든 점에서 연속이면 그 구간에서 연속(연속함수)이라 한다.</p>
+        <p><b>닫힌구간 [a,b]에서 연속</b>이란:</p>
+        <ul>
+          <li>ㄱ. 열린구간 <span class="math">(a,b)</span>에서 연속이고</li>
+          <li>ㄴ. <span class="math">lim<sub>x→a+</sub> f(x)=f(a)</span>, <span class="math">lim<sub>x→b-</sub> f(x)=f(b)</span> (양 끝점에서는 한쪽 극한만 확인)</li>
+        </ul>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">f(x) = √(x-1)</span>이 연속인 구간을 말하시오.</p>
+          <p><b>A.</b> 근호 안이 <span class="math">0</span> 이상이어야 하므로 정의역은 <span class="math">x≥1</span>, 즉 <span class="math">[1,∞)</span>. 이 구간 전체에서 <span class="math">f</span>는 연속이다.</p>
+        </div>
+      </details>
+      <div class="tip">구간 표기에서 등호가 포함되는 <span class="math">≤</span>는 대괄호(닫힌), 포함되지 않는 <span class="math">&lt;</span>는 소괄호(열린)로 대응된다. 양 끝 부호를 헷갈리면 연속 여부 판단이 완전히 달라지므로 주의.</div>
+    </section>
+
+    <section class="concept" id="c8">
+      <div class="concept-head"><span class="concept-num">8</span><h3>연속함수의 성질</h3></div>
+      <div class="def">
+        <p>두 함수 <span class="math">f, g</span>가 <span class="math">x=a</span>에서 모두 연속이면 다음도 <span class="math">x=a</span>에서 연속이다:</p>
+        <ul>
+          <li><span class="math">kf(x)</span> (<span class="math">k</span>는 상수)</li>
+          <li><span class="math">f(x)±g(x)</span>, <span class="math">f(x)g(x)</span></li>
+          <li><span class="math">f(x)/g(x)</span> (단, <span class="math">g(a)≠0</span>)</li>
+        </ul>
+        <p>두 다항식 <span class="math">f, g</span>로 만들어진 유리함수 <span class="math">f(x)/g(x)</span>는 <span class="math">g(x)=0</span>이 되는 <span class="math">x</span>를 제외한 모든 실수에서 연속이다.</p>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">f(x)=x²+1</span>, <span class="math">g(x)=x-3</span>일 때, <span class="math">h(x)=f(x)/g(x)</span>가 불연속이 되는 점은?</p>
+          <p><b>A.</b> <span class="math">f, g</span>는 모든 실수에서 연속인 다항함수이므로, <span class="math">h</span>는 <span class="math">g(x)=0</span>인 점, 즉 <span class="math">x=3</span>에서만 불연속이고 그 외 모든 실수에서 연속이다.</p>
+        </div>
+      </details>
+      <div class="tip">정확히 말하면 <span class="math">x=3</span>은 '불연속'이 아니라 <span class="math">h(x)</span>가 <b>정의되지 않는</b> 점이다. 정의되지 않은 점을 연속/불연속으로 판단하려는 실수를 하지 않도록 유의.</div>
+    </section>
+
+    <section class="concept" id="c9">
+      <div class="concept-head"><span class="concept-num">9</span><h3>최대·최소의 정리</h3></div>
+      <div class="def">
+        <p>함수 <span class="math">f</span>가 닫힌구간 <span class="math">[a,b]</span>에서 연속이면, <span class="math">f</span>는 이 구간에서 반드시 <b>최댓값과 최솟값</b>을 갖는다.</p>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">f(x)=-x²+4x</span>가 닫힌구간 <span class="math">[0,3]</span>에서 최댓값과 최솟값을 갖는 이유를 설명하고, 그 값을 구하시오.</p>
+          <p><b>A.</b> <span class="math">f</span>는 다항함수이므로 <span class="math">[0,3]</span>에서 연속 → 최대·최소 정리에 의해 최댓값·최솟값이 반드시 존재한다. 꼭짓점은 <span class="math">x=2</span>에서 <span class="math">f(2)=4</span>(최댓값). 양 끝값 <span class="math">f(0)=0</span>, <span class="math">f(3)=3</span> 중 작은 값이 최솟값이므로 최솟값은 <span class="math">0</span>.</p>
+        </div>
+      </details>
+      <div class="tip">'닫힌구간'과 '연속' 두 조건이 모두 있어야 성립. 열린구간이거나 불연속점이 있으면 보장되지 않는다.</div>
+    </section>
+
+    <section class="concept" id="c10">
+      <div class="concept-head"><span class="concept-num">10</span><h3>사잇값 정리</h3></div>
+      <div class="def">
+        <p>함수 <span class="math">f</span>가 <span class="math">[a,b]</span>에서 연속이고 <span class="math">f(a)≠f(b)</span>일 때, <span class="math">f(a)</span>와 <span class="math">f(b)</span> 사이의 임의의 값 <span class="math">k</span>에 대해 <span class="math">f(c)=k</span>인 <span class="math">c</span>가 <span class="math">(a,b)</span>에 적어도 하나 존재한다.</p>
+        <p><b>실근 존재 판정(가장 많이 쓰는 형태):</b> <span class="math">f(a)</span>와 <span class="math">f(b)</span>의 부호가 다르면 (<span class="math">f(a)f(b)&lt;0</span>) <span class="math">f(x)=0</span>의 실근이 <span class="math">(a,b)</span>에 적어도 하나 존재한다.</p>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">f(x)=x³-3x+1</span>이 구간 <span class="math">(0,1)</span>에서 실근을 가짐을 보여라.</p>
+          <p><b>A.</b> <span class="math">f</span>는 다항함수이므로 모든 구간에서 연속. <span class="math">f(0)=1&gt;0</span>, <span class="math">f(1)=-1&lt;0</span>이므로 <span class="math">f(0)f(1)&lt;0</span>. 사잇값 정리에 의해 <span class="math">(0,1)</span>에서 <span class="math">f(x)=0</span>인 실근이 적어도 하나 존재한다.</p>
+        </div>
+      </details>
+      <div class="tip">사잇값 정리는 실근이 <b>"적어도 하나 존재한다"</b>는 것만 보장한다. 정확히 몇 개인지, 값이 얼마인지는 알려주지 않으므로 "존재성 증명" 문제에만 쓴다는 것을 기억할 것.</div>
+    </section>
+  </div>
+
+  <!-- ================= CHAPTER 2 ================= -->
+  <div id="ch2" class="ch2">
+    <div class="chapter-banner">
+      <span class="chapter-num">Ⅱ</span>
+      <h2>미분</h2>
+    </div>
+    <p class="chapter-sub">평균변화율에서 시작해 미분계수·도함수를 거쳐 함수의 증가·감소, 극대·극소, 그래프까지. 수능에서 가장 비중 높은 단원입니다.</p>
+
+    <section class="concept" id="c11">
+      <div class="concept-head"><span class="concept-num">11</span><h3>평균변화율</h3></div>
+      <div class="def">
+        <p><span class="math">x</span>의 값이 <span class="math">a</span>에서 <span class="math">a+h</span>까지 변할 때, <span class="math">x</span>의 증분 <span class="math">Δx=h</span>에 대한 <span class="math">y</span>의 증분 <span class="math">Δy=f(a+h)-f(a)</span>의 비를 평균변화율이라 한다.</p>
+        <div class="formula"><span class="math">Δy/Δx = {f(a+h)-f(a)} / h</span> (단, <span class="math">h≠0</span>)</div>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">f(x)=x²+2x</span>의 <span class="math">x=1</span>부터 <span class="math">x=3</span>까지의 평균변화율은?</p>
+          <p><b>A.</b> <span class="math">{f(3)-f(1)}/(3-1) = {(15)-(3)}/2 = 12/2 = 6</span></p>
+        </div>
+      </details>
+      <div class="tip">평균변화율 = 두 점을 잇는 직선(할선)의 기울기. 여기서 h→0으로 보내면 #12 미분계수가 된다.</div>
+    </section>
+
+    <section class="concept" id="c12">
+      <div class="concept-head"><span class="concept-num">12</span><h3>미분계수</h3></div>
+      <div class="def">
+        <p>평균변화율의 <span class="math">h→0</span>일 때의 극한값이 존재하면, 이를 <span class="math">x=a</span>에서의 미분계수라 한다.</p>
+        <div class="formula"><span class="math">f'(a) = lim<sub>h→0</sub> {f(a+h)-f(a)}/h = lim<sub>x→a</sub> {f(x)-f(a)}/(x-a)</span></div>
+        <p><b>기하학적 의미:</b> <span class="math">f'(a)</span>는 곡선 <span class="math">y=f(x)</span> 위의 점 <span class="math">(a, f(a))</span>에서의 <b>접선의 기울기</b>.</p>
+        <p><b>미분가능성 ⇒ 연속성:</b> <span class="math">f</span>가 <span class="math">x=a</span>에서 미분가능하면 <span class="math">x=a</span>에서 연속이다. (역은 성립하지 않음! 예: <span class="math">|x|</span>는 <span class="math">x=0</span>에서 연속이지만 미분가능하지 않다)</p>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">f(x)=x²</span>일 때 <span class="math">f'(1)</span>을 정의를 이용해 구하시오.</p>
+          <p><b>A.</b> <span class="math">f'(1) = lim<sub>h→0</sub> {(1+h)²-1}/h = lim<sub>h→0</sub> (2h+h²)/h = lim<sub>h→0</sub>(2+h) = 2</span></p>
+        </div>
+      </details>
+      <div class="tip">"미분가능 ⇒ 연속"은 참이지만 그 역(연속 ⇒ 미분가능)은 <b>거짓</b>이다. <span class="math">f(x)=|x|</span>가 대표적 반례 — <span class="math">x=0</span>에서 연속이지만 좌우 미분계수가 달라 미분가능하지 않다.</div>
+    </section>
+
+    <section class="concept" id="c13">
+      <div class="concept-head"><span class="concept-num">13</span><h3>도함수</h3></div>
+      <div class="def">
+        <p><span class="math">f</span>가 정의역의 모든 점에서 미분가능할 때, 각 <span class="math">x</span>에 미분계수 <span class="math">f'(x)</span>를 대응시키는 새로운 함수를 <span class="math">f</span>의 도함수라 한다.</p>
+        <div class="formula"><span class="math">f'(x) = dy/dx = d/dx f(x) = lim<sub>h→0</sub> {f(x+h)-f(x)}/h</span></div>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">f(x)=x³-2x</span>의 도함수를 정의(극한)를 이용해 구하시오.</p>
+          <p><b>A.</b> <span class="math">f'(x)=lim<sub>h→0</sub> {(x+h)³-2(x+h)-(x³-2x)}/h</span>. 분자를 전개하면 <span class="math">3x²h+3xh²+h³-2h</span>이므로 <span class="math">h</span>로 나누면 <span class="math">3x²+3xh+h²-2</span>. <span class="math">h→0</span>이면 <span class="math">f'(x)=3x²-2</span></p>
+        </div>
+      </details>
+      <div class="tip">"미분계수"는 한 점에서의 값(숫자), "도함수"는 함수 그 자체 — 구분해서 기억!</div>
+    </section>
+
+    <section class="concept" id="c14">
+      <div class="concept-head"><span class="concept-num">14</span><h3>xⁿ의 도함수</h3></div>
+      <div class="def">
+        <p><span class="math">n</span>이 자연수일 때:</p>
+        <div class="formula"><span class="math">y = xⁿ  ⇒  y' = nxⁿ⁻¹</span></div>
+        <p>또한 <span class="math">c</span>가 상수일 때 <span class="math">y=c ⇒ y'=0</span>.</p>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">y=x⁵-3x²+2</span>의 도함수는?</p>
+          <p><b>A.</b> 각 항에 <span class="math">y'=nxⁿ⁻¹</span>를 적용: <span class="math">y' = 5x⁴-6x</span></p>
+        </div>
+      </details>
+      <div class="tip"><span class="math">y=ax</span> (일차항)의 도함수는 상수 <span class="math">a</span>이지 <span class="math">0</span>이 아니다. 상수함수(<span class="math">y=c</span>)의 도함수만 <span class="math">0</span>이라는 점을 혼동하지 않도록 주의.</div>
+    </section>
+
+    <section class="concept" id="c15">
+      <div class="concept-head"><span class="concept-num">15</span><h3>다항함수의 미분법</h3></div>
+      <div class="def">
+        <p>두 함수 <span class="math">f, g</span>가 미분가능할 때:</p>
+        <ul>
+          <li><span class="math">{kf(x)}' = kf'(x)</span> (<span class="math">k</span>는 상수)</li>
+          <li><span class="math">{f(x)±g(x)}' = f'(x)±g'(x)</span></li>
+          <li><span class="math">{f(x)g(x)}' = f'(x)g(x) + f(x)g'(x)</span> (곱의 미분법)</li>
+        </ul>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">y=(x²+1)(x-3)</span>의 도함수는?</p>
+          <p><b>A.</b> 곱의 미분법: <span class="math">y' = 2x(x-3) + (x²+1)(1) = 2x²-6x+x²+1 = 3x²-6x+1</span></p>
+        </div>
+      </details>
+      <div class="tip">곱의 미분법은 "앞은 그대로 두고 뒤를 미분 + 앞을 미분하고 뒤는 그대로"의 순서로 외우면 순서를 안 헷갈린다. 세 함수의 곱은 두 개씩 묶어 순차적으로 적용한다.</div>
+    </section>
+
+    <section class="concept" id="c16">
+      <div class="concept-head"><span class="concept-num">16-17</span><h3>접선의 방정식</h3></div>
+      <div class="def">
+        <p><b>① 곡선 위의 점에서의 접선</b> — 곡선 <span class="math">y=f(x)</span> 위의 점 <span class="math">(a, f(a))</span>에서의 접선:</p>
+        <div class="formula"><span class="math">y - f(a) = f'(a)(x-a)</span></div>
+        <p><b>② 곡선 밖의 점에서 그은 접선</b> — 곡선 밖의 점 <span class="math">(p,q)</span>에서 접선을 그릴 때:</p>
+        <ul>
+          <li>접점을 <span class="math">(t, f(t))</span>로 놓고 접선의 방정식을 <span class="math">y-f(t)=f'(t)(x-t)</span>로 세운다</li>
+          <li>이 식에 <span class="math">(p,q)</span>를 대입해 <span class="math">t</span>의 값을 구한다</li>
+          <li>구한 <span class="math">t</span>를 다시 접선의 방정식에 대입해 완성한다</li>
+        </ul>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> 곡선 <span class="math">y=x²</span> 위의 점 <span class="math">(1,1)</span>에서의 접선의 방정식은?</p>
+          <p><b>A.</b> <span class="math">f'(x)=2x</span>이므로 <span class="math">f'(1)=2</span>. 접선: <span class="math">y-1=2(x-1) ⇒ y=2x-1</span></p>
+        </div>
+      </details>
+      <div class="tip">'곡선 밖의 점'에서 접선을 구하는 문제는 접점 <span class="math">t</span>를 먼저 잡는 것이 핵심 — 점 자체를 대입하면 안 됨!</div>
+    </section>
+
+    <section class="concept" id="c18">
+      <div class="concept-head"><span class="concept-num">18</span><h3>롤의 정리</h3></div>
+      <div class="def">
+        <p>함수 <span class="math">f</span>가 <span class="math">[a,b]</span>에서 연속이고 <span class="math">(a,b)</span>에서 미분가능할 때, <span class="math">f(a)=f(b)</span>이면 <span class="math">f'(c)=0</span>인 <span class="math">c</span>가 <span class="math">(a,b)</span>에 적어도 하나 존재한다.</p>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">f(x)=x²-4x+3</span>이 구간 <span class="math">[1,3]</span>에서 롤의 정리를 만족시키는 <span class="math">c</span>의 값을 구하시오.</p>
+          <p><b>A.</b> <span class="math">f(1)=0, f(3)=0</span>으로 <span class="math">f(1)=f(3)</span>이고 <span class="math">f</span>는 다항함수라 조건을 만족한다. <span class="math">f'(x)=2x-4=0 ⇒ x=2</span>. <span class="math">2∈(1,3)</span>이므로 <span class="math">c=2</span></p>
+        </div>
+      </details>
+      <div class="tip">양 끝 함숫값이 같다 → 그 사이에 기울기 0(수평접선)인 점이 반드시 있다는 뜻.</div>
+    </section>
+
+    <section class="concept" id="c19">
+      <div class="concept-head"><span class="concept-num">19</span><h3>평균값 정리</h3></div>
+      <div class="def">
+        <p>함수 <span class="math">f</span>가 <span class="math">[a,b]</span>에서 연속이고 <span class="math">(a,b)</span>에서 미분가능할 때,</p>
+        <div class="formula"><span class="math">{f(b)-f(a)}/(b-a) = f'(c)</span></div>
+        <p>인 <span class="math">c</span>가 <span class="math">(a,b)</span>에 적어도 하나 존재한다. (롤의 정리는 평균값 정리의 특수한 경우: <span class="math">f(a)=f(b)</span>일 때)</p>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">f(x)=x³</span>이 구간 <span class="math">[0,2]</span>에서 평균값 정리를 만족시키는 <span class="math">c</span>의 값을 구하시오.</p>
+          <p><b>A.</b> <span class="math">{f(2)-f(0)}/(2-0) = 8/2 = 4</span>. <span class="math">f'(c)=3c²=4 ⇒ c²=4/3 ⇒ c=2√3/3</span> (단, <span class="math">0&lt;c&lt;2</span>이므로 양의 값만 취함)</p>
+        </div>
+      </details>
+      <div class="tip">평균값 정리도 "존재성"만 보장하는 정리다. 조건인 <b>연속(닫힌구간)+미분가능(열린구간)</b> 중 하나라도 빠지면 <span class="math">c</span>가 존재하지 않을 수 있으므로 조건을 먼저 확인해야 한다.</div>
+    </section>
+
+    <section class="concept" id="c20">
+      <div class="concept-head"><span class="concept-num">20</span><h3>함수의 증가와 감소</h3></div>
+      <div class="def">
+        <p>구간의 임의의 <span class="math">x₁&lt;x₂</span>에 대해 <span class="math">f(x₁)&lt;f(x₂)</span>이면 증가, <span class="math">f(x₁)&gt;f(x₂)</span>이면 감소.</p>
+        <p><b>미분계수를 이용한 판정</b> — <span class="math">f</span>가 <span class="math">[a,b]</span>에서 연속, <span class="math">(a,b)</span>에서 미분가능할 때:</p>
+        <ul>
+          <li><span class="math">(a,b)</span>에서 <span class="math">f'(x)&gt;0</span> ⇒ <span class="math">f</span>는 <span class="math">[a,b]</span>에서 증가</li>
+          <li><span class="math">(a,b)</span>에서 <span class="math">f'(x)&lt;0</span> ⇒ <span class="math">f</span>는 <span class="math">[a,b]</span>에서 감소</li>
+        </ul>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">f(x)=x³-3x²-9x+1</span>이 증가하는 구간을 구하시오.</p>
+          <p><b>A.</b> <span class="math">f'(x)=3x²-6x-9=3(x-3)(x+1)</span>. <span class="math">f'(x)&gt;0</span>인 구간은 <span class="math">x&lt;-1</span> 또는 <span class="math">x&gt;3</span>. 따라서 증가구간은 <span class="math">(-∞,-1)</span>과 <span class="math">(3,∞)</span></p>
+        </div>
+      </details>
+      <div class="tip">증가/감소 구간을 답할 때 등호를 포함할지(<span class="math">≤,≥</span>) 여부는 학교/교재마다 관례가 다를 수 있으니, <span class="math">f'(x)=0</span>이 되는 경계점은 구간에 포함해도 무방하다는 것만 기억하면 충분하다.</div>
+    </section>
+
+    <section class="concept" id="c21">
+      <div class="concept-head"><span class="concept-num">21</span><h3>함수의 극대와 극소</h3></div>
+      <div class="def">
+        <p><span class="math">x=a</span>를 포함하는 어떤 열린구간에서 <span class="math">f(x)≤f(a)</span>이면 극대, <span class="math">f(x)≥f(a)</span>이면 극소.</p>
+        <p><b>극값의 필요조건:</b> 미분가능한 점에서 극값을 가지면 <span class="math">f'(a)=0</span>.</p>
+        <p><b>극값 판정 (부호 변화):</b></p>
+        <ul>
+          <li><span class="math">f'(x)</span>의 부호가 <span class="math">a</span> 좌우에서 <b>양 → 음</b>으로 바뀌면 극댓값</li>
+          <li><span class="math">f'(x)</span>의 부호가 <span class="math">a</span> 좌우에서 <b>음 → 양</b>으로 바뀌면 극솟값</li>
+        </ul>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">f(x)=x³-3x</span>의 극값을 구하시오.</p>
+          <p><b>A.</b> <span class="math">f'(x)=3x²-3=3(x-1)(x+1)</span>. <span class="math">f'(x)=0</span>인 점은 <span class="math">x=±1</span>. 부호표: <span class="math">x&lt;-1</span>에서 +, <span class="math">-1&lt;x&lt;1</span>에서 -, <span class="math">x&gt;1</span>에서 +. 따라서 <span class="math">x=-1</span>에서 극댓값 <span class="math">f(-1)=2</span>, <span class="math">x=1</span>에서 극솟값 <span class="math">f(1)=-2</span>.</p>
+        </div>
+      </details>
+      <div class="tip"><span class="math">f'(a)=0</span>은 극값의 <b>필요조건일 뿐</b>, 충분조건이 아니다. 반드시 좌우 부호 변화를 확인 (예: <span class="math">f(x)=x³</span>은 <span class="math">f'(0)=0</span>이지만 극값이 아님).</div>
+    </section>
+
+    <section class="concept" id="c22">
+      <div class="concept-head"><span class="concept-num">22</span><h3>함수의 그래프와 그 응용</h3></div>
+      <div class="def">
+        <p>정의역·치역, 증가·감소, 극대·극소, 연속성을 알면 그래프의 개형을 그릴 수 있다.</p>
+        <ul>
+          <li><b>최댓값·최솟값:</b> 닫힌구간 <span class="math">[a,b]</span>에서 극댓값·극솟값과 양 끝값 <span class="math">f(a), f(b)</span> 중 가장 큰 값·가장 작은 값을 택한다.</li>
+          <li><b>방정식의 실근:</b> <span class="math">f(x)=0</span>의 실근 = <span class="math">y=f(x)</span> 그래프와 <span class="math">x</span>축의 교점. <span class="math">f(x)=g(x)</span>의 실근 = 두 그래프의 교점.</li>
+          <li><b>부등식의 증명:</b> 주어진 범위에서 <span class="math">f(x)≥g(x)</span> 증명은 <span class="math">h(x)=f(x)-g(x)</span>로 놓고 <span class="math">h(x)≥0</span>임을 보이는 것과 같다.</li>
+        </ul>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> 방정식 <span class="math">x³-3x+1=0</span>의 실근의 개수를 그래프를 이용해 구하시오.</p>
+          <p><b>A.</b> <span class="math">f(x)=x³-3x+1</span>, <span class="math">f'(x)=3x²-3=3(x-1)(x+1)</span>. <span class="math">x=-1</span>에서 극댓값 <span class="math">f(-1)=3</span>, <span class="math">x=1</span>에서 극솟값 <span class="math">f(1)=-1</span>. 극댓값&gt;0이고 극솟값&lt;0이므로 그래프가 <span class="math">x</span>축과 세 번 만난다 → 실근은 <b>3개</b></p>
+        </div>
+      </details>
+      <div class="tip">그래프 개형을 완성할 때는 극값뿐 아니라 <span class="math">x→±∞</span>일 때 함수가 어디로 향하는지(끝단 방향)도 같이 확인해야 정확한 실근 개수를 판단할 수 있다.</div>
+    </section>
+
+    <section class="concept" id="c23">
+      <div class="concept-head"><span class="concept-num">23</span><h3>속도와 가속도</h3></div>
+      <div class="def">
+        <p>수직선 위를 움직이는 점 <span class="math">P</span>의 시각 <span class="math">t</span>에서의 위치가 <span class="math">x=f(t)</span>일 때:</p>
+        <div class="formula">
+          속도 <span class="math">v = dx/dt = f'(t)</span><br>
+          가속도 <span class="math">a = dv/dt = v'(t)</span>
+        </div>
+        <p>속도의 절댓값 <span class="math">|v|</span>는 속력이라 한다.</p>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> 점 P의 위치가 <span class="math">x(t)=t³-6t²+9t</span>일 때, <span class="math">t=1</span>에서의 속도와 가속도는?</p>
+          <p><b>A.</b> <span class="math">v(t)=3t²-12t+9 ⇒ v(1)=3-12+9=0</span>. <span class="math">a(t)=v'(t)=6t-12 ⇒ a(1)=6-12=-6</span></p>
+        </div>
+      </details>
+      <div class="tip"><span class="math">v(t)=0</span>이 되는 순간은 점이 순간적으로 멈추거나 <b>운동 방향이 바뀔 수 있는 순간</b>이다. 방향이 실제로 바뀌었는지는 <span class="math">v(t)</span>의 좌우 부호를 비교해서 확인해야 한다.</div>
+    </section>
+  </div>
+
+  <!-- ================= CHAPTER 3 ================= -->
+  <div id="ch3" class="ch3">
+    <div class="chapter-banner">
+      <span class="chapter-num">Ⅲ</span>
+      <h2>적분</h2>
+    </div>
+    <p class="chapter-sub">미분의 역연산인 부정적분에서 시작해 정적분, 넓이, 속도와 거리까지. 미분과 적분의 관계(미적분의 기본정리)가 핵심 축입니다.</p>
+
+    <section class="concept" id="c24">
+      <div class="concept-head"><span class="concept-num">24</span><h3>부정적분</h3></div>
+      <div class="def">
+        <p>미분하여 <span class="math">f(x)</span>가 되는 함수, 즉 <span class="math">F'(x)=f(x)</span>가 되는 <span class="math">F(x)</span>를 <span class="math">f(x)</span>의 부정적분이라 한다.</p>
+        <div class="formula"><span class="math">F'(x) = f(x) ⇔ ∫f(x)dx = F(x) + C</span> (<span class="math">C</span>는 적분상수)</div>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">F'(x)=6x²-4x+3</span>이고 <span class="math">F(0)=2</span>일 때 <span class="math">F(x)</span>를 구하시오.</p>
+          <p><b>A.</b> <span class="math">F(x)=2x³-2x²+3x+C</span>. <span class="math">F(0)=C=2</span>이므로 <span class="math">F(x)=2x³-2x²+3x+2</span></p>
+        </div>
+      </details>
+      <div class="tip">부정적분에는 항상 적분상수 <span class="math">C</span>를 붙여야 하며, <span class="math">F(0)=2</span>처럼 초기조건이 주어지면 그 값을 대입해 <span class="math">C</span>를 반드시 확정해야 완전한 답이 된다. <span class="math">C</span>를 빼먹는 실수가 가장 흔하다.</div>
+    </section>
+
+    <section class="concept" id="c25">
+      <div class="concept-head"><span class="concept-num">25</span><h3>부정적분의 계산</h3></div>
+      <div class="def">
+        <p><span class="math">n</span>이 음이 아닌 정수일 때:</p>
+        <div class="formula"><span class="math">∫xⁿ dx = xⁿ⁺¹/(n+1) + C</span></div>
+        <p><b>부정적분의 성질</b> (<span class="math">k</span>는 상수):</p>
+        <ul>
+          <li><span class="math">∫kf(x)dx = k∫f(x)dx</span></li>
+          <li><span class="math">∫{f(x)+g(x)}dx = ∫f(x)dx + ∫g(x)dx</span></li>
+          <li><span class="math">∫{f(x)-g(x)}dx = ∫f(x)dx - ∫g(x)dx</span></li>
+        </ul>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">∫(3x²-4x+1)dx</span></p>
+          <p><b>A.</b> <span class="math">= 3·x³/3 - 4·x²/2 + x + C = x³-2x²+x+C</span></p>
+        </div>
+      </details>
+      <div class="tip"><span class="math">(x+1)(x-2)</span>처럼 곱셈이나 분수식으로 주어지면 적분 공식을 바로 쓸 수 없다. 반드시 먼저 전개·분배해서 <span class="math">xⁿ</span>의 합 형태로 바꾼 뒤 항별로 적분한다.</div>
+    </section>
+
+    <section class="concept" id="c26">
+      <div class="concept-head"><span class="concept-num">26</span><h3>정적분</h3></div>
+      <div class="def">
+        <p><b>구분구적법:</b> 도형을 여러 개의 간단한 도형으로 세분해 넓이·부피의 합을 구한 뒤, 그 합의 극한값으로 원래 도형의 넓이·부피를 구하는 방법.</p>
+        <p><b>정적분의 정의</b> — 함수 <span class="math">f</span>가 <span class="math">[a,b]</span>에서 연속일 때:</p>
+        <div class="formula"><span class="math">∫<sub>a</sub><sup>b</sup> f(x)dx = lim<sub>n→∞</sub> Σ<sub>k=1</sub><sup>n</sup> f(x<sub>k</sub>)Δx</span></div>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> 구간 <span class="math">[0,1]</span>을 <span class="math">n</span>등분하여 <span class="math">f(x)=x²</span>의 정적분을 구분구적법의 정의로 나타내시오.</p>
+          <p><b>A.</b> <span class="math">Δx=1/n</span>, <span class="math">x<sub>k</sub>=k/n</span>이므로 <span class="math">∫<sub>0</sub><sup>1</sup> x² dx = lim<sub>n→∞</sub> Σ<sub>k=1</sub><sup>n</sup> (k/n)²·(1/n)</span> (실제 값은 #27의 미적분의 기본정리로 더 쉽게 계산: <span class="math">1/3</span>)</p>
+        </div>
+      </details>
+      <div class="tip">정적분 값은 함수가 구간에서 음수이면 <b>음수</b>가 나올 수 있다. "정적분 = 넓이"는 <span class="math">f(x)≥0</span>일 때만 성립하는 특수한 경우이며, 일반적인 넓이 계산은 #29에서처럼 절댓값을 취해야 한다.</div>
+    </section>
+
+    <section class="concept" id="c27">
+      <div class="concept-head"><span class="concept-num">27</span><h3>미적분의 기본 정리</h3></div>
+      <div class="def">
+        <p><b>정적분과 미분의 관계</b> — <span class="math">f</span>가 <span class="math">[a,b]</span>에서 연속일 때:</p>
+        <div class="formula"><span class="math">d/dx ∫<sub>a</sub><sup>x</sup> f(t)dt = f(x)</span></div>
+        <p><b>미적분의 기본 정리</b> — <span class="math">F</span>가 <span class="math">f</span>의 한 부정적분일 때:</p>
+        <div class="formula"><span class="math">∫<sub>a</sub><sup>b</sup> f(x)dx = [F(x)]<sub>a</sub><sup>b</sup> = F(b)-F(a)</span></div>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">∫<sub>0</sub><sup>2</sup> (3x²-1)dx</span></p>
+          <p><b>A.</b> 부정적분 <span class="math">F(x)=x³-x</span>. <span class="math">F(2)-F(0) = (8-2)-(0) = 6</span></p>
+        </div>
+      </details>
+      <div class="tip">위끝이 <span class="math">x</span>가 아니라 다른 식 <span class="math">g(x)</span>이면 (예: <span class="math">∫<sub>a</sub><sup>g(x)</sup> f(t)dt</span>), 미분할 때 연쇄법칙을 함께 써야 한다: <span class="math">d/dx ∫<sub>a</sub><sup>g(x)</sup> f(t)dt = f(g(x))·g'(x)</span></div>
+    </section>
+
+    <section class="concept" id="c28">
+      <div class="concept-head"><span class="concept-num">28</span><h3>정적분의 성질</h3></div>
+      <div class="def">
+        <p>두 함수 <span class="math">f, g</span>가 <span class="math">[a,b]</span>에서 연속일 때 (<span class="math">k</span>는 상수):</p>
+        <ul>
+          <li><span class="math">∫<sub>a</sub><sup>b</sup> kf(x)dx = k∫<sub>a</sub><sup>b</sup> f(x)dx</span></li>
+          <li><span class="math">∫<sub>a</sub><sup>b</sup> {f(x)±g(x)}dx = ∫<sub>a</sub><sup>b</sup> f(x)dx ± ∫<sub>a</sub><sup>b</sup> g(x)dx</span></li>
+        </ul>
+        <p><span class="math">f</span>가 <span class="math">a, b, c</span>를 포함하는 구간에서 연속일 때:</p>
+        <div class="formula"><span class="math">∫<sub>a</sub><sup>b</sup> f(x)dx + ∫<sub>b</sub><sup>c</sup> f(x)dx = ∫<sub>a</sub><sup>c</sup> f(x)dx</span></div>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">∫<sub>0</sub><sup>2</sup> f(x)dx = 5</span>, <span class="math">∫<sub>2</sub><sup>5</sup> f(x)dx = -3</span>일 때, <span class="math">∫<sub>0</sub><sup>5</sup> f(x)dx</span>의 값은?</p>
+          <p><b>A.</b> 구간을 합치면 <span class="math">∫<sub>0</sub><sup>5</sup> f(x)dx = 5+(-3) = 2</span></p>
+        </div>
+      </details>
+      <div class="tip"><span class="math">∫<sub>a</sub><sup>b</sup> f(x)dx + ∫<sub>b</sub><sup>c</sup> f(x)dx = ∫<sub>a</sub><sup>c</sup> f(x)dx</span>는 <span class="math">b</span>가 <span class="math">a, c</span> 사이에 있지 않아도(순서가 바뀌어도) 성립하는 일반화된 성질이다. 부호에만 주의하면 된다.</div>
+    </section>
+
+    <section class="concept" id="c29">
+      <div class="concept-head"><span class="concept-num">29</span><h3>도형의 넓이</h3></div>
+      <div class="def">
+        <p><b>곡선과 x축 사이의 넓이</b> — <span class="math">[a,b]</span>에서 연속인 <span class="math">y=f(x)</span>와 <span class="math">x</span>축, 두 직선 <span class="math">x=a, x=b</span>로 둘러싸인 넓이:</p>
+        <div class="formula"><span class="math">S = ∫<sub>a</sub><sup>b</sup> |f(x)| dx</span></div>
+        <p><b>두 곡선 사이의 넓이</b> — <span class="math">y=f(x)</span>와 <span class="math">y=g(x)</span>, 두 직선 <span class="math">x=a, x=b</span>로 둘러싸인 넓이:</p>
+        <div class="formula"><span class="math">S = ∫<sub>a</sub><sup>b</sup> |f(x)-g(x)| dx</span></div>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> <span class="math">y=x²</span>와 <span class="math">y=x</span>로 둘러싸인 부분의 넓이는? (<span class="math">0≤x≤1</span> 구간에서 <span class="math">x≥x²</span>)</p>
+          <p><b>A.</b> <span class="math">S = ∫<sub>0</sub><sup>1</sup> (x-x²)dx = [x²/2 - x³/3]<sub>0</sub><sup>1</sup> = 1/2-1/3 = 1/6</span></p>
+        </div>
+      </details>
+      <div class="tip">넓이는 절댓값 안의 부호를 반드시 확인! 구간 안에서 위·아래가 바뀌면 구간을 나눠서 각각 적분.</div>
+    </section>
+
+    <section class="concept" id="c30">
+      <div class="concept-head"><span class="concept-num">30</span><h3>속도와 거리</h3></div>
+      <div class="def">
+        <p><b>위치:</b> 시각 <span class="math">t=a</span>일 때 위치 <span class="math">x(a)</span>가 주어지면, 시각 <span class="math">t=b</span>일 때 위치:</p>
+        <div class="formula"><span class="math">x(b) = x(a) + ∫<sub>a</sub><sup>b</sup> v(t)dt</span></div>
+        <p><b>이동 거리:</b> <span class="math">t=a</span>에서 <span class="math">t=b</span>까지 점 <span class="math">P</span>의 이동 거리 <span class="math">s</span>는 (방향이 바뀌어도 항상 양수로 누적):</p>
+        <div class="formula"><span class="math">s = ∫<sub>a</sub><sup>b</sup> |v(t)| dt</span></div>
+      </div>
+      <details class="example">
+        <summary>예제 풀어보기</summary>
+        <div class="example-body">
+          <p><b>Q.</b> 속도가 <span class="math">v(t)=3t²-6t</span> (<span class="math">0≤t≤3</span>)일 때, <span class="math">t=0</span>부터 <span class="math">t=3</span>까지 점 P의 이동 거리를 구하시오.</p>
+          <p><b>A.</b> <span class="math">v(t)=3t(t-2)=0</span>에서 <span class="math">t=0, 2</span>. <span class="math">0&lt;t&lt;2</span>에서 <span class="math">v&lt;0</span>, <span class="math">2&lt;t&lt;3</span>에서 <span class="math">v&gt;0</span>. 위치함수 <span class="math">x(t)=t³-3t²</span>로 <span class="math">x(0)=0, x(2)=-4, x(3)=0</span>. 이동거리 <span class="math">= |x(2)-x(0)| + |x(3)-x(2)| = |-4|+|4| = 8</span></p>
+        </div>
+      </details>
+      <div class="tip">'위치의 변화량'(변위)은 <span class="math">∫v(t)dt</span>, '이동 거리'는 <span class="math">∫|v(t)|dt</span> — 방향 전환이 있으면 반드시 구분!</div>
+    </section>
+  </div>
+
+  </main>
+</div>
+
+<footer>상무고 유환수 작성 · 미적분 1 개념 총정리</footer>
+
+<script>
+  // active TOC highlighting
+  const sections = document.querySelectorAll('.concept');
+  const links = document.querySelectorAll('.toc-list a');
+  const linkMap = {};
+  links.forEach(l => linkMap[l.getAttribute('href').slice(1)] = l);
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const link = linkMap[entry.target.id];
+      if(!link) return;
+      if(entry.isIntersecting){
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+<script>
+(function(){
+'use strict';
+var root=document.documentElement;
+root.classList.add('js');
+var reduce=false;
+try{ reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
+function $(s,r){ return (r||document).querySelector(s); }
+function $$(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
+
+/* 1. 스크롤 진행 막대 */
+var bar=document.createElement('div'); bar.id='scroll-progress'; bar.setAttribute('aria-hidden','true');
+document.body.appendChild(bar);
+var tick=false;
+function prog(){
+  tick=false;
+  var h=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.width=(h>0?Math.min(100,Math.max(0,window.scrollY/h*100)):0)+'%';
+}
+window.addEventListener('scroll',function(){ if(!tick){ tick=true; requestAnimationFrame(prog); } },{passive:true});
+window.addEventListener('resize',prog); prog();
+
+/* 2. 스크롤 등장 */
+var targets=$$('.concept,.chapter-banner,.chapter-sub');
+if('IntersectionObserver' in window&&!reduce){
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in-view'); io.unobserve(e.target); } });
+  },{rootMargin:'0px 0px -8% 0px',threshold:0.03});
+  targets.forEach(function(t){ io.observe(t); });
+  /* 안전장치: 어떤 이유로든 숨은 채 남지 않도록 */
+  setTimeout(function(){ targets.forEach(function(t){ var r=t.getBoundingClientRect(); if(r.top<window.innerHeight*1.2) t.classList.add('in-view'); }); },2500);
+} else targets.forEach(function(t){ t.classList.add('in-view'); });
+
+/* 3. 히어로 등장 */
+var hero=$('#hero');
+if(hero){
+  if('IntersectionObserver' in window){
+    var ho=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ hero.classList.add('play'); ho.disconnect(); } });
+    },{threshold:0.25});
+    ho.observe(hero);
+    setTimeout(function(){ if(!hero.classList.contains('play')){ var r=hero.getBoundingClientRect(); if(r.top<window.innerHeight) hero.classList.add('play'); } },3000);
+  } else hero.classList.add('play');
+}
+
+/* 4. 인트로: 오브 · 떠다니는 기호 · 배지 · 통계 */
+var intro=$('#intro');
+if(intro){
+  var inner=$('.intro-inner',intro);
+  [1,2,3].forEach(function(i){ var o=document.createElement('div'); o.className='intro-orb intro-orb-'+i; o.setAttribute('aria-hidden','true'); intro.insertBefore(o,inner); });
+  var syms=['∫','lim','f′(x)','Σ','dx','∞','Δx','→','x²','dy/dx','π','≈'];
+  syms.forEach(function(sy,i){
+    var s=document.createElement('span'); s.className='intro-symbol'; s.setAttribute('aria-hidden','true'); s.textContent=sy;
+    s.style.left=(4+((i*37)%88))+'%';
+    s.style.bottom='-8%';
+    s.style.fontSize=(22+((i*13)%34))+'px';
+    s.style.animationDuration=(16+((i*5)%13))+'s';
+    s.style.animationDelay=(-(i*2.3))+'s';
+    intro.insertBefore(s,inner);
+  });
+  var sub=$('.intro-sub',inner), scroll=$('.intro-scroll',inner), anchor=scroll||null;
+  var badges=document.createElement('div'); badges.className='intro-badges';
+  [['Ⅰ 함수의 극한과 연속','var(--c1)'],['Ⅱ 미분','var(--c2)'],['Ⅲ 적분','var(--c3)']].forEach(function(b){
+    var d=document.createElement('div'); d.className='intro-badge';
+    var c=document.createElement('span'); c.className='chip'; c.style.background=b[1]; d.appendChild(c);
+    d.appendChild(document.createTextNode(b[0])); badges.appendChild(d);
+  });
+  var stats=document.createElement('div'); stats.className='intro-stats';
+  var data=[[30,'핵심 개념'],[3,'대단원'],[29,'체험 그림']];
+  var nums=[];
+  data.forEach(function(s){
+    var d=document.createElement('div'); d.className='intro-stat';
+    var b=document.createElement('b'); b.textContent=reduce?String(s[0]):'0';
+    var l=document.createElement('span'); l.textContent=s[1];
+    d.appendChild(b); d.appendChild(l); stats.appendChild(d); nums.push(b);
+  });
+  inner.insertBefore(badges,anchor); inner.insertBefore(stats,anchor);
+  function count(){
+    if(reduce) return;
+    nums.forEach(function(el,i){
+      var t0=null, dur=900, delay=1300+i*100;
+      function f(ts){
+        if(t0===null) t0=ts;
+        var to=(i===2&&window.__calcLabs)?window.__calcLabs:data[i][0];
+        var p=Math.min(1,Math.max(0,(ts-t0-delay)/dur)), e=1-Math.pow(1-p,3);
+        el.textContent=String(Math.round(to*e));
+        if(p<1) requestAnimationFrame(f);
+      }
+      requestAnimationFrame(f);
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',count); else count();
+}
+
+/* 5. 예제 펼칠 때 부드럽게 */
+$$('details.example').forEach(function(d){
+  d.addEventListener('toggle',function(){
+    var b=$('.example-body',d); if(!b) return;
+    b.classList.remove('fade-in');
+    if(d.open){ void b.offsetWidth; b.classList.add('fade-in'); }
+  });
+});
+})();
+
+</script>
+<script>
+/* ================= 미적분 체험 그림 (추가) — part 1: 코어 + #1~#12 ================= */
+(function(){
+'use strict';
+var NS='http://www.w3.org/2000/svg';
+var LABS={};
+var BLUE='#2563EB',ORG='#D97706',PINK='#DB2777',GRN='#059669',RED='#DC2626',INK='#16233B',GRY='#6B7A90';
+window.__LABS=LABS;
+function chOf(n){ return n<=10?1:n<=23?2:3; }
+function $$(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
+function setA(e,a){
+  if(!a) return e;
+  for(var k in a){
+    var v=a[k];
+    if(k==='text') e.textContent=v;
+    else if(k==='html') e.innerHTML=v;
+    else if(k.slice(0,2)==='on') e.addEventListener(k.slice(2),v);
+    else e.setAttribute(k,v);
+  }
+  return e;
+}
+function addKids(e,kids){
+  for(var i=0;i<kids.length;i++){
+    var c=kids[i];
+    if(c==null||c===false) continue;
+    if(Array.isArray(c)) addKids(e,c);
+    else e.appendChild(typeof c==='object'?c:document.createTextNode(String(c)));
+  }
+}
+function E(tag,a){ var e=document.createElement(tag); setA(e,a); addKids(e,Array.prototype.slice.call(arguments,2)); return e; }
+function S(tag,a,parent){ var e=document.createElementNS(NS,tag); setA(e,a); if(parent) parent.appendChild(e); return e; }
+function clr(e){ while(e.firstChild) e.removeChild(e.firstChild); }
+function cl(v,a,b){ return Math.max(a,Math.min(b,v)); }
+function ms(n){ return String(n).replace('-','−'); }
+function fx(x,d){ if(d===undefined) d=1; var p=Math.pow(10,d); var v=Math.round(x*p)/p; if(v===0) v=0; return v.toFixed(d).replace('-','−'); }
+function gcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ var t=a%b; a=b; b=t; } return a; }
+function fracH(n,d){ return '<span class="frac"><span class="num">'+n+'</span><span class="den">'+d+'</span></span>'; }
+function fracS(n,d){ if(d<0){ n=-n; d=-d; } var g=gcd(n,d)||1; n/=g; d/=g; return d===1?ms(n):ms(n)+'/'+d; }
+function sup(n){ return String(n).replace(/[0-9]/g,function(d){ return '⁰¹²³⁴⁵⁶⁷⁸⁹'.charAt(+d); }).replace('-','⁻'); }
+function dist(p,q){ return Math.hypot(p[0]-q[0],p[1]-q[1]); }
+function D(f,x){ var h=1e-5; return (f(x+h)-f(x-h))/(2*h); }
+function roots(f,a,b){
+  var n=800,r=[],px=null,pv=0,i,x,v,s;
+  for(i=0;i<=n;i++){
+    x=a+(b-a)*i/n; v=f(x); s=v>1e-9?1:(v<-1e-9?-1:0);
+    if(s===0) continue;
+    if(px!==null&&s!==pv){
+      var lo=px,hi=x,k,mid,mv;
+      for(k=0;k<50;k++){ mid=(lo+hi)/2; mv=f(mid); if((mv>0?1:-1)===pv) lo=mid; else hi=mid; }
+      r.push((lo+hi)/2);
+    }
+    px=x; pv=s;
+  }
+  return r;
+}
+function integ(f,a,b){ var n=600,h=(b-a)/n,s=f(a)+f(b),i; for(i=1;i<n;i++) s+=f(a+h*i)*(i%2?4:2); return s*h/3; }
+function sgnOf(v){ return v>1e-9?1:(v<-1e-9?-1:0); }
+
+/* ---------- 포인터 드래그 ---------- */
+function ptOf(svg,e){
+  var r=svg.getBoundingClientRect(), vb=svg.viewBox.baseVal;
+  return {x:vb.x+(e.clientX-r.left)*vb.width/(r.width||1), y:vb.y+(e.clientY-r.top)*vb.height/(r.height||1)};
+}
+function drag(svg,el,fn){
+  el.classList.add('drag-handle');
+  var on=false;
+  el.addEventListener('pointerdown',function(e){ on=true; try{ el.setPointerCapture(e.pointerId); }catch(_){} e.preventDefault(); });
+  el.addEventListener('pointermove',function(e){ if(!on) return; var p=ptOf(svg,e); fn(p.x,p.y); e.preventDefault(); });
+  var off=function(){ on=false; };
+  el.addEventListener('pointerup',off); el.addEventListener('pointercancel',off); el.addEventListener('lostpointercapture',off);
+}
+function handle(parent,x,y,label,dx,dy){
+  var g=S('g',{},parent);
+  S('circle',{r:17,fill:'transparent'},g);
+  S('circle',{r:6.5,fill:'currentColor',stroke:'#fff','stroke-width':2},g);
+  if(label) S('text',{'font-size':13,'font-weight':700,fill:'currentColor','text-anchor':'middle','pointer-events':'none',x:dx||0,y:dy===undefined?-12:dy,text:label},g);
+  g.set=function(px,py){ g.setAttribute('transform','translate('+px+','+py+')'); };
+  g.show=function(b){ g.style.display=b?'':'none'; };
+  g.set(x,y);
+  return g;
+}
+
+/* ---------- 그래프 헬퍼 ---------- */
+var gidN=0;
+function nice(r){ var s=r/6,p=Math.pow(10,Math.floor(Math.log(s)/Math.LN10)),m=s/p; return (m<1.5?1:m<3.5?2:m<7.5?5:10)*p; }
+function tickTxt(v){ return ms(parseFloat(v.toFixed(6))); }
+function Graph(parent,box,dom,opt){
+  opt=opt||{};
+  var G={box:box,dom:dom}, g=S('g',{},parent), id='gc'+(++gidN);
+  var dx=dom.x[1]-dom.x[0], dy=dom.y[1]-dom.y[0];
+  G.X=function(x){ return box.x+(x-dom.x[0])/dx*box.w; };
+  G.Y=function(y){ return box.y+box.h-(y-dom.y[0])/dy*box.h; };
+  G.ix=function(px){ return dom.x[0]+(px-box.x)/box.w*dx; };
+  G.iy=function(py){ return dom.y[0]+(box.y+box.h-py)/box.h*dy; };
+  var cp=S('clipPath',{id:id},g); S('rect',{x:box.x,y:box.y,width:box.w,height:box.h},cp);
+  S('rect',{x:box.x,y:box.y,width:box.w,height:box.h,fill:'#fff',stroke:'#DCE6E2'},g);
+  var tx=opt.tx||nice(dx), ty=opt.ty||nice(dy), i, v;
+  var bg=S('g',{'clip-path':'url(#'+id+')'},g);
+  for(i=Math.ceil(dom.x[0]/tx-1e-9);i*tx<=dom.x[1]+1e-9;i++){
+    v=i*tx;
+    S('line',{x1:G.X(v),y1:box.y,x2:G.X(v),y2:box.y+box.h,stroke:'#EDF2F0'},bg);
+    if(!opt.nolab) S('text',{x:G.X(v),y:box.y+box.h+11,'text-anchor':'middle','font-size':9,fill:GRY,text:tickTxt(v)},g);
+  }
+  for(i=Math.ceil(dom.y[0]/ty-1e-9);i*ty<=dom.y[1]+1e-9;i++){
+    v=i*ty;
+    S('line',{x1:box.x,y1:G.Y(v),x2:box.x+box.w,y2:G.Y(v),stroke:'#EDF2F0'},bg);
+    if(!opt.nolab) S('text',{x:box.x-4,y:G.Y(v)+3,'text-anchor':'end','font-size':9,fill:GRY,text:tickTxt(v)},g);
+  }
+  if(dom.y[0]<0&&dom.y[1]>0){
+    S('line',{x1:box.x,y1:G.Y(0),x2:box.x+box.w,y2:G.Y(0),stroke:'#8795A8','stroke-width':1.3},bg);
+    S('text',{x:box.x+box.w-8,y:G.Y(0)-5,'font-size':11,fill:GRY,class:'i',text:opt.xn||'x'},g);
+  }
+  if(dom.x[0]<0&&dom.x[1]>0){
+    S('line',{x1:G.X(0),y1:box.y,x2:G.X(0),y2:box.y+box.h,stroke:'#8795A8','stroke-width':1.3},bg);
+    S('text',{x:G.X(0)+6,y:box.y+11,'font-size':11,fill:GRY,class:'i',text:opt.yn||'y'},g);
+  }
+  G.id=id; G.g=g;
+  G.lay=S('g',{'clip-path':'url(#'+id+')'},g);
+  G.layers=function(){
+    var d=S('g',{'clip-path':'url(#'+id+')'},parent), o=S('g',{},parent);
+    G.lay=d;
+    return {d:d,o:o,clear:function(){ clr(d); clr(o); }};
+  };
+  G.curve=function(fn,at,a,b,n){
+    a=a===undefined?dom.x[0]:a; b=b===undefined?dom.x[1]:b; n=n||260;
+    var d='',pen=false,pp=0,lim=Math.abs(dy)*30,i,x,y,px,py;
+    for(i=0;i<=n;i++){
+      x=a+(b-a)*i/n; y=fn(x);
+      if(!isFinite(y)||Math.abs(y)>lim){ pen=false; continue; }
+      px=G.X(x); py=G.Y(y);
+      if(pen&&Math.abs(py-pp)>box.h*1.2) pen=false;
+      d+=(pen?'L':'M')+px.toFixed(1)+','+py.toFixed(1); pen=true; pp=py;
+    }
+    var p=S('path',{d:d||'M0,0',fill:'none',stroke:'currentColor','stroke-width':2.4,'stroke-linejoin':'round','stroke-linecap':'round'},G.lay);
+    if(at) setA(p,at);
+    return p;
+  };
+  G.line=function(x1,y1,x2,y2,at){
+    var l=S('line',{x1:G.X(x1),y1:G.Y(y1),x2:G.X(x2),y2:G.Y(y2),stroke:'currentColor','stroke-width':1.6},G.lay);
+    if(at) setA(l,at); return l;
+  };
+  G.slope=function(x0,y0,m,at,w){ w=w||dx*2; return G.line(x0-w,y0-m*w,x0+w,y0+m*w,at); };
+  G.dot=function(x,y,col,r,at){
+    var c=S('circle',{cx:G.X(x),cy:G.Y(y),r:r||5,fill:col||'currentColor',stroke:'#fff','stroke-width':1.6},G.lay);
+    if(at) setA(c,at); return c;
+  };
+  G.open=function(x,y,col,r){ return S('circle',{cx:G.X(x),cy:G.Y(y),r:r||4.5,fill:'#fff',stroke:col||'currentColor','stroke-width':2},G.lay); };
+  G.text=function(x,y,t,at){
+    var e=S('text',{x:G.X(x),y:G.Y(y),'font-size':11,'font-weight':700,fill:'currentColor',text:t},G.lay);
+    if(at) setA(e,at); return e;
+  };
+  G.area=function(fn,a,b,fill,op,gfn,n){
+    n=n||120;
+    var i,x,d='M'+G.X(a).toFixed(1)+','+G.Y(gfn?gfn(a):0).toFixed(1);
+    for(i=0;i<=n;i++){ x=a+(b-a)*i/n; d+=' L'+G.X(x).toFixed(1)+','+G.Y(fn(x)).toFixed(1); }
+    for(i=n;i>=0;i--){ x=a+(b-a)*i/n; d+=' L'+G.X(x).toFixed(1)+','+G.Y(gfn?gfn(x):0).toFixed(1); }
+    return S('path',{d:d+' Z',fill:fill,'fill-opacity':op===undefined?.28:op,stroke:'none'},G.lay);
+  };
+  /* 부호별 색칠: 영점으로 구간을 나눠 양수=pc, 음수=nc */
+  G.signed=function(fn,a,b,rts,pc,nc,op){
+    var lo=Math.min(a,b),hi=Math.max(a,b),pts=[lo],i;
+    (rts||[]).forEach(function(r){ if(r>lo+1e-9&&r<hi-1e-9) pts.push(r); });
+    pts.sort(function(p,q){ return p-q; }); pts.push(hi);
+    for(i=0;i<pts.length-1;i++){
+      var m=(pts[i]+pts[i+1])/2;
+      G.area(fn,pts[i],pts[i+1],fn(m)>=0?pc:nc,op===undefined?.35:op,null,60);
+    }
+  };
+  return G;
+}
+
+/* ---------- 체험 그림 공장 ---------- */
+function makeLab(root,n,badge){
+  var c=chOf(n);
+  root.className='concept-figure is-live lab';
+  root.setAttribute('style','color:var(--c'+c+');--accent-ui:var(--c'+c+');--soft-ui:var(--c'+c+'-soft);');
+  var L={root:root,n:n};
+  root.appendChild(E('span',{class:'live-badge',text:badge}));
+  L.svg=function(vb,label){ var s=S('svg',{viewBox:vb,role:'img','aria-label':label||'인터랙티브 그림'}); root.appendChild(s); return s; };
+  L.ctrl=function(){ var d=E('div',{class:'figure-controls'}); root.appendChild(d); return d; };
+  L.stop=function(){ if(L._st){ L._st(); L._st=null; } };
+  L.slider=function(parent,label,min,max,step,val,cb,fmt){
+    var lab=E('label'), inp=E('input',{type:'range',min:min,max:max,step:step,value:val}), v=E('span',{class:'live-val'});
+    fmt=fmt||ms;
+    function upd(){ v.textContent=fmt(parseFloat(inp.value)); }
+    inp.addEventListener('input',function(){ L.stop(); upd(); cb(parseFloat(inp.value)); });
+    lab.appendChild(E('span',{text:label})); lab.appendChild(inp); lab.appendChild(v); parent.appendChild(lab); upd();
+    return {el:inp,wrap:lab,get:function(){ return parseFloat(inp.value); },set:function(x){ inp.value=x; upd(); },show:function(b){ lab.style.display=b?'':'none'; },range:function(mn,mx,val2){ inp.min=mn; inp.max=mx; inp.value=val2; upd(); }};
+  };
+  L.btn=function(parent,text,ghost,cb){ var b=E('button',{class:'sim-btn'+(ghost?' ghost':''),type:'button',text:text}); b.addEventListener('click',cb); parent.appendChild(b); return b; };
+  L.tabs=function(names,cb,start){
+    var wrap=E('div',{class:'tabs',role:'group'}), bs=[];
+    names.forEach(function(nm,i){
+      var b=E('button',{type:'button',class:'tab','aria-pressed':String(i===(start||0)),text:nm});
+      b.addEventListener('click',function(){ L.stop(); bs.forEach(function(x,j){ x.setAttribute('aria-pressed',String(j===i)); }); cb(i); });
+      bs.push(b); wrap.appendChild(b);
+    });
+    root.appendChild(wrap);
+    return wrap;
+  };
+  L.out=function(){ var p=E('p',{class:'live-readout','aria-live':'polite'}); root.appendChild(p); return p; };
+  L.hint=function(text){ var p=E('p',{class:'drag-hint',text:text}); root.appendChild(p); return p; };
+  L.lights=function(names){
+    var wrap=E('div',{class:'lights'}), items=names.map(function(nm){ var s=E('span',{class:'light',text:nm}); wrap.appendChild(s); return s; });
+    root.appendChild(wrap);
+    return {set:function(i,on){ items[i].classList.toggle('on',!!on); },items:items};
+  };
+  L.play=function(from,to,ms_,step,done){
+    L.stop();
+    var t0=null,id,stopped=false;
+    function f(ts){
+      if(stopped) return;
+      if(t0===null) t0=ts;
+      var p=Math.min(1,(ts-t0)/ms_);
+      step(from+(to-from)*p);
+      if(p<1) id=requestAnimationFrame(f); else { L._st=null; if(done) done(); }
+    }
+    id=requestAnimationFrame(f);
+    L._st=function(){ stopped=true; cancelAnimationFrame(id); };
+  };
+  return L;
+}
+function lab(n,badge,fn){ LABS['c'+n]={badge:badge,fn:fn}; }
+var B1={x:34,y:8,w:274,h:168};
+var VB1='0 0 320 204';
+
+/* ================= Ⅰ. 함수의 극한과 연속 ================= */
+
+lab(1,'접근 정도를 올려 x를 a에 한없이 가까이 보내보세요',function(L){
+  var EX=[
+    {n:'0/0 꼴',f:function(x){ return (x*x-1)/(x-1); },a:1,L:2,hole:true,fa:null,dx:[-1.2,3.6],dy:[-1,5]},
+    {n:'극한 ≠ 함숫값',f:function(x){ return (x*x-1)/(x-1); },a:1,L:2,hole:true,fa:3.2,dx:[-1.2,3.6],dy:[-1,5]},
+    {n:'발산',f:function(x){ return 1/(x*x); },a:0,L:Infinity,hole:false,fa:null,dx:[-2.2,2.2],dy:[-1,9]}
+  ], ei=0, s=0.2;
+  L.tabs(EX.map(function(e){ return e.n; }),function(i){ ei=i; draw(); });
+  var svg=L.svg(VB1,'함수의 극한');
+  var ctrl=L.ctrl();
+  var sl=L.slider(ctrl,'접근 정도',0,2.5,0.05,0.2,function(v){ s=v; draw(); },function(v){ return 'δ='+fx(1.5*Math.pow(10,-v),3); });
+  L.btn(ctrl,'a로 접근 ▶',false,function(){ L.play(0,2.5,3500,function(v){ s=v; sl.set(v); draw(); }); });
+  var out=L.out();
+  function draw(){
+    clr(svg);
+    var e=EX[ei], G=Graph(svg,B1,{x:e.dx,y:e.dy}), d=1.5*Math.pow(10,-s), ys=[];
+    G.curve(e.f,{},e.dx[0],e.a-1e-4); G.curve(e.f,{},e.a+1e-4,e.dx[1]);
+    if(e.hole&&isFinite(e.L)) G.open(e.a,e.L,'currentColor');
+    if(e.fa!==null) G.dot(e.a,e.fa,PINK);
+    [[e.a-d,BLUE],[e.a+d,ORG]].forEach(function(p){
+      var y=e.f(p[0]), py=cl(G.Y(y),B1.y+5,B1.y+B1.h-5), px=G.X(p[0]);
+      S('line',{x1:px,y1:py,x2:px,y2:B1.y+B1.h,stroke:p[1],'stroke-dasharray':'3 3'},G.lay);
+      S('line',{x1:B1.x,y1:py,x2:px,y2:py,stroke:p[1],'stroke-dasharray':'3 3'},G.lay);
+      S('circle',{cx:px,cy:py,r:5.5,fill:p[1],stroke:'#fff','stroke-width':1.6},G.lay);
+      ys.push(y);
+    });
+    var t='x = a−δ = <b>'+fx(e.a-d,3)+'</b> → f(x) = <b>'+fx(ys[0],3)+'</b><br>x = a+δ = <b>'+fx(e.a+d,3)+'</b> → f(x) = <b>'+fx(ys[1],3)+'</b><br>';
+    if(!isFinite(e.L)) t+='<b>f(x)가 한없이 커져요 → 양의 무한대로 발산</b> <span class="math">(lim f(x) = +∞)</span>';
+    else{
+      t+='f(x)가 <b>'+e.L+'</b>에 한없이 가까워져요 → <span class="math">lim f(x) = '+e.L+'</span>';
+      t+=e.fa===null?'<br><span class="dim">x=1에서 함숫값이 없어도 극한값은 존재할 수 있어요.</span>':'<br><span class="dim">함숫값 f(1)='+e.fa+'과 상관없이 극한값은 '+e.L+'이에요.</span>';
+    }
+    out.innerHTML=t;
+  }
+  draw();
+});
+
+lab(2,'점 P를 끌어 a의 왼쪽·오른쪽에서 접근해보세요',function(L){
+  var EX=[
+    {n:'x/|x|',a:0,pc:[function(){ return -1; },function(){ return 1; }],Ll:-1,Lr:1,fa:null,dx:[-2,2],dy:[-2.5,2.5]},
+    {n:'좌극한 = 우극한',a:1,pc:[function(x){ return x+1; },function(x){ return 3-x; }],Ll:2,Lr:2,fa:0.5,dx:[-1,3],dy:[-1,4]},
+    {n:'좌극한 ≠ 우극한',a:1,pc:[function(x){ return x+1; },function(x){ return x+2; }],Ll:2,Lr:3,fa:null,dx:[-1,3],dy:[-1,5]}
+  ], ei=0, xp=-0.8;
+  L.tabs(EX.map(function(e){ return e.n; }),function(i){ ei=i; xp=EX[i].a-0.8; build(); });
+  var svg=L.svg(VB1,'좌극한과 우극한');
+  var sg=S('g',{},svg);
+  var hp=handle(svg,0,0,'P',0,-12);
+  var lights=L.lights(['','','']);
+  var out=L.out(); L.hint('점 P를 끌어보세요 (a에 가까울수록 좋아요)');
+  var G,ly;
+  function build(){ clr(sg); var e=EX[ei]; G=Graph(sg,B1,{x:e.dx,y:e.dy}); ly=G.layers(); upd(); }
+  function upd(){
+    var e=EX[ei]; ly.clear(); G.lay=ly.d;
+    G.curve(e.pc[0],{},e.dx[0],e.a-1e-4); G.curve(e.pc[1],{},e.a+1e-4,e.dx[1]);
+    G.open(e.a,e.Ll,'currentColor'); if(e.Ll!==e.Lr) G.open(e.a,e.Lr,'currentColor');
+    if(e.fa!==null) G.dot(e.a,e.fa,PINK);
+    var x=cl(xp,e.dx[0]+0.05,e.dx[1]-0.05);
+    if(Math.abs(x-e.a)<0.03) x=e.a+(xp<e.a?-0.03:0.03);
+    var left=x<e.a, y=(left?e.pc[0]:e.pc[1])(x), col=left?BLUE:ORG;
+    var py=G.Y(y), px=G.X(x);
+    S('line',{x1:px,y1:py,x2:px,y2:B1.y+B1.h,stroke:col,'stroke-dasharray':'3 3'},ly.d);
+    S('line',{x1:B1.x,y1:py,x2:px,y2:py,stroke:col,'stroke-dasharray':'3 3'},ly.d);
+    hp.set(px,py);
+    lights.items[0].textContent='좌극한 = '+e.Ll;
+    lights.items[1].textContent='우극한 = '+e.Lr;
+    lights.items[2].textContent='좌 = 우 → 극한값 존재';
+    lights.set(0,true); lights.set(1,true); lights.set(2,e.Ll===e.Lr);
+    out.innerHTML='x = <b>'+fx(x,3)+'</b> ('+(left?'<span style="color:'+BLUE+'">왼쪽에서 접근 x→a⁻</span>':'<span style="color:#B45309">오른쪽에서 접근 x→a⁺</span>')+') → f(x) = <b>'+fx(y,3)+'</b><br>'+(e.Ll===e.Lr?'<b class="ok">양쪽에서 같은 값 '+e.Ll+'에 접근 → 극한값 '+e.Ll+'</b>':'<b class="bad-t">좌극한 '+e.Ll+' ≠ 우극한 '+e.Lr+' → 극한값이 존재하지 않아요</b>');
+  }
+  drag(svg,hp,function(x,y){ xp=G.ix(x); upd(); });
+  build();
+});
+
+lab(3,'δ를 0으로 줄여 연산 결과가 극한값에 가까워지는지 보세요',function(L){
+  var Lv=4,Mv=2,dl=1,op=1;
+  var OPS=['3f(x)','f(x)+g(x)','f(x)−g(x)','f(x)·g(x)','f(x)÷g(x)'];
+  var fn=[function(f){ return 3*f; },function(f,g){ return f+g; },function(f,g){ return f-g; },function(f,g){ return f*g; },function(f,g){ return f/g; }];
+  L.tabs(OPS,function(i){ op=i; draw(); },1);
+  var svg=L.svg('0 0 320 150','극한값의 성질');
+  var c1=L.ctrl();
+  L.slider(c1,'L (f의 극한)',-4,4,1,4,function(v){ Lv=v; draw(); });
+  L.slider(c1,'M (g의 극한)',-3,3,1,2,function(v){ Mv=v; draw(); });
+  L.slider(c1,'δ',0,1.5,0.05,1,function(v){ dl=v; draw(); },function(v){ return fx(v,2); });
+  var out=L.out();
+  function draw(){
+    clr(svg);
+    var f=Lv+dl, g=Mv-0.5*dl, h=fn[op](f,g), tgt=fn[op](Lv,Mv), div=(op===4&&Mv===0);
+    var vals=[['f(x)',f,Lv,BLUE],['g(x)',g,Mv,ORG],div?null:[OPS[op],h,tgt,GRN]], mx=8;
+    vals.forEach(function(v){ if(v){ mx=Math.max(mx,Math.abs(v[1]),Math.abs(v[2])); } });
+    var cx=190, sc=110/mx;
+    S('line',{x1:cx,y1:6,x2:cx,y2:144,stroke:GRY},svg);
+    vals.forEach(function(v,i){
+      if(!v) return;
+      var y=14+i*44, w=v[1]*sc;
+      S('rect',{x:w>=0?cx:cx+w,y:y,width:Math.abs(w),height:26,rx:5,fill:v[3],'fill-opacity':.8},svg);
+      S('text',{x:6,y:y+17,'font-size':11,'font-weight':700,fill:v[3],text:v[0]},svg);
+      var tx=cx+v[2]*sc;
+      S('line',{x1:tx,y1:y-4,x2:tx,y2:y+30,stroke:INK,'stroke-width':2,'stroke-dasharray':'3 2'},svg);
+      S('text',{x:cx+w+(w>=0?4:-4),y:y+17,'text-anchor':w>=0?'start':'end','font-size':11,fill:INK,text:fx(v[1],2)},svg);
+    });
+    out.innerHTML=div?'<b class="bad-t">M=0 이면 f÷g 의 극한 성질을 쓸 수 없어요</b> (분모의 극한이 0이 아니어야 해요).':'<span class="math">f(x)='+fx(f,2)+', g(x)='+fx(g,2)+'</span> → '+OPS[op]+' = <b>'+fx(h,2)+'</b><br>δ→0 이면 f→'+Lv+', g→'+Mv+' 이므로 극한값은 <b class="math">'+fx(tgt,2)+'</b> (검은 점선)'+(dl<0.06?' <span class="ok">거의 도달!</span>':'');
+  }
+  draw();
+});
+
+lab(4,'꼴에 맞는 변형을 따라가고, 숫자로도 확인해보세요',function(L){
+  var P=[
+    {n:'0/0 유리함수',t:'lim<sub>x→1</sub> (x²−1)/(x−1)',f:function(x){ return (x*x-1)/(x-1); },a:1,ans:'2',st:[
+      {h:'x=1을 대입하면 <b>0/0 꼴</b>',n:'바로 답을 낼 수 없어요. 약분부터!'},
+      {h:'분자 인수분해: <span class="math">(x−1)(x+1)/(x−1)</span>'},
+      {h:'<span class="math">x≠1</span> 이므로 약분: <span class="math">x+1</span>',n:'약분은 x≠a 라는 전제에서만 가능해요.'},
+      {h:'<span class="math">x→1</span> 이면 <b>2</b>'}]},
+    {n:'0/0 무리함수',t:'lim<sub>x→0</sub> (√(x+4)−2)/x',f:function(x){ return (Math.sqrt(x+4)-2)/x; },a:0,ans:'1/4',st:[
+      {h:'x=0을 대입하면 <b>0/0 꼴</b>'},
+      {h:'근호가 있는 분자를 <b>유리화</b>: 분모·분자에 <span class="math">(√(x+4)+2)</span> 를 곱해요.'},
+      {h:'<span class="math">x/{x(√(x+4)+2)} = 1/(√(x+4)+2)</span>',n:'x를 약분!'},
+      {h:'<span class="math">x→0</span> 이면 <span class="math">1/(2+2)=<b>1/4</b></span>'}]},
+    {n:'∞/∞ 꼴',t:'lim<sub>x→∞</sub> (3x²+x)/(x²−1)',f:function(x){ return (3*x*x+x)/(x*x-1); },a:Infinity,ans:'3',st:[
+      {h:'x→∞ 이면 분자·분모가 모두 ∞ → <b>∞/∞ 꼴</b>'},
+      {h:'분모의 최고차항 <span class="math">x²</span> 으로 분모·분자를 나눠요.'},
+      {h:'<span class="math">(3+1/x)/(1−1/x²)</span>'},
+      {h:'<span class="math">1/x→0</span> 이므로 <b>3</b>'}]},
+    {n:'∞−∞ 꼴',t:'lim<sub>x→∞</sub> (√(x²+x)−x)',f:function(x){ return Math.sqrt(x*x+x)-x; },a:Infinity,ans:'1/2',st:[
+      {h:'√(x²+x) 도, x 도 ∞ → <b>∞−∞ 꼴</b>'},
+      {h:'무리식이니 <b>유리화</b>: <span class="math">x/(√(x²+x)+x)</span>'},
+      {h:'분모·분자를 x로 나눠요: <span class="math">1/(√(1+1/x)+1)</span>'},
+      {h:'<span class="math">1/x→0</span> 이므로 <span class="math">1/(1+1)=<b>1/2</b></span>'}]}
+  ], pi=0,k=0,t=3;
+  L.tabs(P.map(function(p){ return p.n; }),function(i){ pi=i; k=0; render(); });
+  var box=E('div',{class:'stepbox','aria-live':'polite'}); L.root.appendChild(box);
+  var bar=L.ctrl();
+  var nx=L.btn(bar,'풀이 시작',false,function(){ if(k<P[pi].st.length){ k++; render(); } });
+  L.btn(bar,'처음부터',true,function(){ k=0; render(); });
+  L.slider(L.ctrl(),'접근 정도',1,6,1,3,function(v){ t=v; num(); },function(v){ return v; });
+  var out=L.out();
+  function render(){
+    var p=P[pi]; clr(box);
+    box.appendChild(E('div',{class:'step-title',html:'계산해 보세요: <b class="math">'+p.t+'</b>'}));
+    for(var i=0;i<k;i++){
+      var s=p.st[i], line=E('div',{class:'step-line'+(i===k-1?' new':'')});
+      line.appendChild(E('span',{class:'step-no',text:String(i+1)}));
+      var body=E('div',{class:'step-body'},E('div',{html:s.h}));
+      if(s.n) body.appendChild(E('div',{class:'step-note',html:s.n}));
+      line.appendChild(body); box.appendChild(line);
+    }
+    nx.disabled=k>=p.st.length;
+    nx.textContent=k===0?'풀이 시작':(k>=p.st.length?'풀이 끝':'다음 단계');
+    num();
+  }
+  function num(){
+    var p=P[pi], inf=!isFinite(p.a), x=inf?Math.pow(10,t):p.a+Math.pow(10,-t), y=p.f(x);
+    out.innerHTML='숫자로 확인: x = <b class="math">'+(inf?'10<sup>'+t+'</sup>':String(+x.toFixed(6)))+'</b> → f(x) = <b>'+fx(y,6)+'</b><br>접근 정도를 올리면 <b>'+p.ans+'</b> 에 가까워져요.';
+  }
+  render();
+});
+
+lab(5,'확대해서 두 함수 사이에 낀 함수가 어디로 가는지 보세요',function(L){
+  var z=0,n=3;
+  var svg=L.svg(VB1,'샌드위치 정리');
+  var ctrl=L.ctrl();
+  L.slider(ctrl,'확대 정도',0,1.6,0.05,0,function(v){ z=v; draw(); },function(v){ return '×'+fx(Math.pow(10,v),1); });
+  L.slider(ctrl,'진동 n',1,8,1,3,function(v){ n=v; draw(); });
+  var out=L.out();
+  function draw(){
+    clr(svg);
+    var w=Math.pow(10,-z), G=Graph(svg,B1,{x:[-w,w],y:[-w,w]});
+    G.curve(function(x){ return Math.abs(x); },{stroke:BLUE,'stroke-width':2},-w,w,200);
+    G.curve(function(x){ return -Math.abs(x); },{stroke:ORG,'stroke-width':2},-w,w,200);
+    G.curve(function(x){ return x===0?0:x*Math.sin(n/x); },{'stroke-width':1.2},-w,w,2400);
+    G.open(0,0,'currentColor');
+    S('text',{x:B1.x+8,y:B1.y+16,'font-size':11,'font-weight':700,fill:BLUE,text:'g(x) = |x|'},svg);
+    S('text',{x:B1.x+8,y:B1.y+B1.h-8,'font-size':11,'font-weight':700,fill:ORG,text:'f(x) = −|x|'},svg);
+    out.innerHTML='<span class="math">−|x| ≤ h(x) ≤ |x|</span>, h(x) = x·sin(n/x)<br>보이는 범위 ±<b>'+fx(w,3)+'</b> 안에서 h는 항상 두 선 사이 → 확대할수록 h도 <b>0</b>으로 눌려요.<br><span class="math">lim f = lim g = 0 ⇒ lim h = <b>0</b></span>';
+  }
+  draw();
+});
+
+lab(6,'세 조건을 하나씩 확인하며 연속이 되는 순간을 찾아보세요',function(L){
+  var mode=1,k=3,sj=1;
+  L.tabs(['f(2) 없음','f(2)=k','좌우극한 다름'],function(i){ mode=i; sk.show(i===1); ss.show(i===2); upd(); },1);
+  var svg=L.svg(VB1,'함수의 연속');
+  var G=Graph(svg,B1,{x:[-1,5],y:[0,8]}), ly=G.layers();
+  var c=L.ctrl();
+  var sk=L.slider(c,'f(2)=k',0,7,0.5,3,function(v){ k=v; upd(); },function(v){ return fx(v,1); });
+  var ss=L.slider(c,'오른쪽 점프',-2,2,0.5,1,function(v){ sj=v; upd(); },function(v){ return fx(v,1); });
+  ss.show(false);
+  var lights=L.lights(['① f(2)가 정의되어 있다','② 극한값이 존재한다','③ lim f(x) = f(2)']);
+  var out=L.out(); L.hint('f(x)=(x²−4)/(x−2)  (x≠2) 의 x=2 에서');
+  function upd(){
+    ly.clear(); G.lay=ly.d;
+    var jump=mode===2?sj:0;
+    G.curve(function(x){ return x+2; },{},-1,2-1e-4);
+    G.curve(function(x){ return x+2+jump; },{},2+1e-4,5);
+    var l1,l2,l3,msg;
+    if(mode===0){ G.open(2,4,'currentColor'); l1=false; l2=true; l3=false; msg='f(2)가 정의되어 있지 않아요 → <b class="bad-t">① 불만족, 불연속</b>'; }
+    else if(mode===1){ G.open(2,4,'currentColor'); G.dot(2,k,k===4?GRN:PINK); l1=true; l2=true; l3=k===4; msg=k===4?'<b class="ok">세 조건 모두 만족 → x=2에서 연속!</b> (k=4)':'극한값 4 ≠ 함숫값 '+fx(k,1)+' → <b class="bad-t">③ 불만족, 불연속</b>'; }
+    else { if(jump!==0) G.open(2,4+jump,'currentColor'); G.dot(2,4,jump===0?GRN:PINK); l1=true; l2=jump===0; l3=jump===0; msg=jump===0?'<b class="ok">세 조건 모두 만족 → 연속!</b>':'좌극한 4, 우극한 '+fx(4+jump,1)+' 이 달라요 → <b class="bad-t">② 불만족, 불연속</b>'; }
+    lights.set(0,l1); lights.set(1,l2); lights.set(2,l3);
+    out.innerHTML=msg;
+  }
+  upd();
+});
+
+lab(7,'구간의 양 끝 a, b를 끌어 연속 조건을 확인해보세요',function(L){
+  var a=1,b=5,closed=true, f=function(x){ return Math.sqrt(x-1); };
+  L.tabs(['닫힌구간 [a, b]','열린구간 (a, b)'],function(i){ closed=i===0; upd(); });
+  var svg=L.svg(VB1,'연속인 구간');
+  var G=Graph(svg,B1,{x:[-1,7],y:[-1,3]}), ly=G.layers();
+  var ha=handle(svg,0,0,'a',0,22), hb=handle(svg,0,0,'b',0,22);
+  var lights=L.lights(['ㄱ (a, b)에서 연속','ㄴ lim x→a+ f(x) = f(a)','ㄷ lim x→b− f(x) = f(b)']);
+  var out=L.out(); L.hint('f(x)=√(x−1) · a, b를 끌어보세요 (정의역은 x≥1)');
+  function upd(){
+    ly.clear(); G.lay=ly.d;
+    G.curve(f,{},1,7,220);
+    S('line',{x1:G.X(a),y1:G.Y(0),x2:G.X(b),y2:G.Y(0),stroke:ORG,'stroke-width':5,'stroke-opacity':.7},ly.d);
+    [a,b].forEach(function(v){ if(v>=1){ if(closed) G.dot(v,f(v),ORG); else G.open(v,f(v),ORG); } });
+    ha.set(G.X(a),G.Y(0)); hb.set(G.X(b),G.Y(0));
+    var ok=a>=1;
+    lights.set(0,ok); lights.set(1,ok&&closed); lights.set(2,ok&&closed);
+    var m;
+    if(!ok) m='<b class="bad-t">구간의 일부가 정의역(x≥1) 밖이에요</b> → 이 구간에서 연속이라고 할 수 없어요.';
+    else if(closed) m='<b class="ok">[a, b]에서 연속!</b> 양 끝에서는 한쪽 극한만 확인해요'+(a===1?' (<span class="math">lim x→1+ √(x−1) = 0 = f(1)</span>)':'')+'.';
+    else m='<b class="ok">(a, b)에서 연속</b> — 열린구간은 양 끝점의 조건이 필요 없어요.';
+    out.innerHTML=m;
+  }
+  drag(svg,ha,function(x){ a=cl(Math.round(G.ix(x)*2)/2,-0.5,b-0.5); upd(); });
+  drag(svg,hb,function(x){ b=cl(Math.round(G.ix(x)*2)/2,a+0.5,6.5); upd(); });
+  upd();
+});
+
+lab(8,'c를 바꿔 g(x)=0 이 되는 점에서 어떻게 달라지는지 보세요',function(L){
+  var op=2,c=1, f=function(x){ return 0.5*x*x+0.5; };
+  var OPS=['f + g','f × g','f ÷ g'];
+  L.tabs(OPS,function(i){ op=i; upd(); },2);
+  var svg=L.svg(VB1,'연속함수의 성질');
+  var G=Graph(svg,B1,{x:[-4,4],y:[-6,6]}), ly=G.layers();
+  L.slider(L.ctrl(),'c  (g(x) = x − c)',-3,3,0.5,1,function(v){ c=v; upd(); });
+  var out=L.out();
+  function upd(){
+    ly.clear(); G.lay=ly.d;
+    var g=function(x){ return x-c; };
+    var h=[function(x){ return f(x)+g(x); },function(x){ return f(x)*g(x); },function(x){ return f(x)/g(x); }][op];
+    G.curve(f,{stroke:BLUE,'stroke-width':1.6,'stroke-opacity':.7});
+    G.curve(g,{stroke:ORG,'stroke-width':1.6,'stroke-opacity':.7});
+    G.curve(h,{stroke:GRN,'stroke-width':3.2});
+    S('text',{x:B1.x+8,y:B1.y+15,'font-size':10.5,'font-weight':700,fill:BLUE,text:'f(x) = x²/2 + 1/2'},ly.o);
+    S('text',{x:B1.x+8,y:B1.y+29,'font-size':10.5,'font-weight':700,fill:'#B45309',text:'g(x) = x − '+fx(c,1)},ly.o);
+    S('text',{x:B1.x+8,y:B1.y+43,'font-size':10.5,'font-weight':700,fill:GRN,text:OPS[op]+' (초록)'},ly.o);
+    if(op===2){
+      G.line(c,-6,c,6,{stroke:RED,'stroke-width':1.4,'stroke-dasharray':'4 3'});
+      out.innerHTML='f, g는 모두 연속인 다항함수 → f÷g 는 <b class="bad-t">g(x)=0 인 x='+fx(c,1)+'</b> 에서만 정의되지 않고,<br>그 외 모든 실수에서 연속이에요. (<span class="math">g(a)≠0</span> 일 때만 가능)';
+    } else out.innerHTML='f, g가 연속이면 <b>'+(op===0?'f+g':'f×g')+'</b> 도 <b class="ok">모든 실수에서 연속</b>이에요. (끊어진 곳이 없어요)';
+  }
+  upd();
+});
+
+lab(9,'a, b를 끌어 최댓값과 최솟값이 존재하는지 확인해보세요',function(L){
+  var mode=0,a=0,b=3;
+  var f1=function(x){ return -x*x+4*x; }, f2=function(x){ return x<2?x:0; };
+  L.tabs(['연속 · 닫힌구간','연속 · 열린구간','불연속 · 닫힌구간'],function(i){ mode=i; a=0; b=i===2?3.5:3; upd(); });
+  var svg=L.svg(VB1,'최대·최소의 정리');
+  var G=Graph(svg,B1,{x:[-1,5],y:[-3,6]}), ly=G.layers();
+  var ha=handle(svg,0,0,'a',0,22), hb=handle(svg,0,0,'b',0,22);
+  var out=L.out(); L.hint('a, b를 좌우로 끌어보세요');
+  function ext(){
+    var n=600,i,x,y;
+    if(mode<2){
+      var M=-1e9,m=1e9,iM=0,im=0;
+      for(i=0;i<=n;i++){ x=a+(b-a)*i/n; y=f1(x); if(y>M){ M=y; iM=i; } if(y<m){ m=y; im=i; } }
+      var oM=mode===1&&(iM===0||iM===n), om=mode===1&&(im===0||im===n);
+      return {max:oM?null:{x:a+(b-a)*iM/n,y:M},min:om?null:{x:a+(b-a)*im/n,y:m}};
+    }
+    if(a>=2) return {max:{x:a,y:0},min:{x:a,y:0}};
+    if(b<2) return {max:{x:b,y:b},min:{x:a,y:a}};
+    return {max:null,min:a<0?{x:a,y:a}:{x:2,y:0}};
+  }
+  function upd(){
+    ly.clear(); G.lay=ly.d;
+    var f=mode<2?f1:f2;
+    if(mode<2) G.curve(f1,{},-1,5);
+    else { G.curve(f2,{},-1,2-1e-4); G.open(2,2,'currentColor'); G.line(2,0,5,0,{'stroke-width':2.4}); G.dot(2,0,'currentColor',4); }
+    S('line',{x1:G.X(a),y1:G.Y(0),x2:G.X(b),y2:G.Y(0),stroke:ORG,'stroke-width':5,'stroke-opacity':.7},ly.d);
+    [a,b].forEach(function(v){ if(mode===1) G.open(v,f(v),ORG); else G.dot(v,f(v),ORG,4); });
+    ha.set(G.X(a),G.Y(0)); hb.set(G.X(b),G.Y(0));
+    var r=ext();
+    function mark(p,col,tag){
+      if(!p) return;
+      G.line(-1,p.y,p.x,p.y,{stroke:col,'stroke-dasharray':'4 3','stroke-width':1.4});
+      G.dot(p.x,p.y,col,6.5);
+      G.text(p.x+0.15,p.y+0.5,tag,{fill:col});
+    }
+    mark(r.max,GRN,'최대'); mark(r.min,RED,'최소');
+    var mt=r.max?'<b class="ok">최댓값 '+fx(r.max.y,2)+'</b> (x='+fx(r.max.x,2)+')':'<b class="bad-t">최댓값 없음</b>';
+    var nt=r.min?'<b class="ok">최솟값 '+fx(r.min.y,2)+'</b> (x='+fx(r.min.x,2)+')':'<b class="bad-t">최솟값 없음</b>';
+    var why=mode===0?'연속 + 닫힌구간 → 반드시 존재':mode===1?'열린구간이라 끝점의 값을 갖지 못해요':'x=2에서 끊겨 있어요. 한없이 2에 가까워질 뿐 2를 갖지 못해요';
+    out.innerHTML=mt+' · '+nt+'<br><span class="dim">'+why+'</span>';
+  }
+  drag(svg,ha,function(x){ a=cl(Math.round(G.ix(x)*4)/4,-1,b-0.5); upd(); });
+  drag(svg,hb,function(x){ b=cl(Math.round(G.ix(x)*4)/4,a+0.5,4.75); upd(); });
+  upd();
+});
+
+lab(10,'k를 바꿔 f(c)=k 인 c가 (a, b)에 있는지 찾아보세요',function(L){
+  var a=0,b=1,k=0, f=function(x){ return x*x*x-3*x+1; };
+  var svg=L.svg(VB1,'사잇값 정리');
+  var G=Graph(svg,B1,{x:[-2.5,2.5],y:[-6,6]}), ly=G.layers();
+  var ha=handle(svg,0,0,'A',-12,-10), hb=handle(svg,0,0,'B',12,-10);
+  L.slider(L.ctrl(),'k',-4,4,0.5,0,function(v){ k=v; upd(); },function(v){ return fx(v,1); });
+  var lights=L.lights(['f(a) ≠ f(b)','k가 f(a)와 f(b) 사이','f(c) = k 인 c 존재']);
+  var out=L.out(); L.hint('f(x)=x³−3x+1 · 점 A, B를 곡선 위에서 끌어보세요');
+  function upd(){
+    ly.clear(); G.lay=ly.d;
+    G.curve(f,{},-2.5,2.5,300);
+    G.line(-2.5,k,2.5,k,{stroke:ORG,'stroke-dasharray':'5 3','stroke-width':1.6});
+    G.line(a,-6,a,6,{stroke:GRY,'stroke-dasharray':'3 3','stroke-width':1});
+    G.line(b,-6,b,6,{stroke:GRY,'stroke-dasharray':'3 3','stroke-width':1});
+    ha.set(G.X(a),G.Y(f(a))); hb.set(G.X(b),G.Y(f(b)));
+    var rs=roots(function(x){ return f(x)-k; },a,b);
+    rs.forEach(function(r){ G.dot(r,k,GRN,6); G.line(r,k,r,0,{stroke:GRN,'stroke-dasharray':'3 3'}); });
+    var fa=f(a),fb=f(b), lo=Math.min(fa,fb), hi=Math.max(fa,fb);
+    var l1=Math.abs(fa-fb)>1e-9, l2=k>lo+1e-9&&k<hi-1e-9, l3=rs.length>0;
+    lights.set(0,l1); lights.set(1,l2); lights.set(2,l3);
+    out.innerHTML='f(a) = <b>'+fx(fa,2)+'</b>, f(b) = <b>'+fx(fb,2)+'</b>'+(l3?'<br><b class="ok">c ≈ '+rs.map(function(r){ return fx(r,2); }).join(', ')+'</b> (초록 점) — f(c)=k':'<br>(a, b)에서 f(c)=k 인 c가 없어요')+'<br><span class="dim">'+(l2?'k가 f(a)와 f(b) 사이 → 정리에 의해 c가 <b>적어도 하나</b> 존재해요.':'k가 사이에 없으면 존재가 보장되지 않아요.')+(k===0&&fa*fb<0?' (f(a)f(b)<0 → 실근 존재)':'')+'</span>';
+  }
+  drag(svg,ha,function(x){ a=cl(Math.round(G.ix(x)*10)/10,-2.4,b-0.3); upd(); });
+  drag(svg,hb,function(x){ b=cl(Math.round(G.ix(x)*10)/10,a+0.3,2.4); upd(); });
+  upd();
+});
+
+/* ================= Ⅱ. 미분 ================= */
+
+lab(11,'두 점 P, Q를 끌어 평균변화율(할선의 기울기)을 확인해보세요',function(L){
+  var a=1,b=3, f=function(x){ return 0.5*x*x-x; };
+  var svg=L.svg(VB1,'평균변화율');
+  var G=Graph(svg,B1,{x:[-2,5],y:[-2,8]}), ly=G.layers();
+  var hp=handle(svg,0,0,'P',-12,-10), hq=handle(svg,0,0,'Q',12,-10);
+  var out=L.out(); L.hint('f(x)=x²/2 − x · P, Q를 곡선 위에서 끌어보세요');
+  function upd(){
+    ly.clear(); G.lay=ly.d;
+    G.curve(f,{},-2,5);
+    var fa=f(a),fb=f(b), m=(fb-fa)/(b-a);
+    G.slope(a,fa,m,{stroke:ORG,'stroke-width':2.2});
+    G.line(a,fa,b,fa,{stroke:GRN,'stroke-dasharray':'4 3','stroke-width':1.8});
+    G.line(b,fa,b,fb,{stroke:PINK,'stroke-dasharray':'4 3','stroke-width':1.8});
+    S('text',{x:(G.X(a)+G.X(b))/2,y:G.Y(fa)+(fb>=fa?14:-6),'text-anchor':'middle','font-size':11,'font-weight':700,fill:GRN,text:'Δx = '+fx(b-a,1)},ly.o);
+    S('text',{x:G.X(b)+6,y:(G.Y(fa)+G.Y(fb))/2+4,'font-size':11,'font-weight':700,fill:PINK,text:'Δy = '+fx(fb-fa,2)},ly.o);
+    hp.set(G.X(a),G.Y(fa)); hq.set(G.X(b),G.Y(fb));
+    out.innerHTML='평균변화율 <span class="math">Δy/Δx = {f('+fx(b,1)+')−f('+fx(a,1)+')}/('+fx(b,1)+'−'+fx(a,1)+') = <b>'+fx(m,3)+'</b></span><br><span class="dim">= 두 점 P, Q를 잇는 직선(할선)의 기울기</span>';
+  }
+  drag(svg,hp,function(x){ var v=cl(Math.round(G.ix(x)*10)/10,-1.9,4.8); if(Math.abs(v-b)<0.2) v=b+(v<b?-0.2:0.2); a=v; upd(); });
+  drag(svg,hq,function(x){ var v=cl(Math.round(G.ix(x)*10)/10,-1.9,4.8); if(Math.abs(v-a)<0.2) v=a+(v<a?-0.2:0.2); b=v; upd(); });
+  upd();
+});
+
+lab(12,'h를 0에 가까이 보내 할선이 접선이 되는 순간을 보세요',function(L){
+  var a=2,h=2.5, f=function(x){ return 0.5*x*x-x; };
+  var svg=L.svg(VB1,'미분계수');
+  var G=Graph(svg,B1,{x:[-2,5],y:[-2,8]}), ly=G.layers();
+  var c1=L.ctrl();
+  L.slider(c1,'a',-1,3.5,0.1,2,function(v){ a=v; upd(); },function(v){ return fx(v,1); });
+  var sh=L.slider(c1,'h',-3,3,0.01,2.5,function(v){ h=v; upd(); },function(v){ return fx(v,2); });
+  var c2=L.ctrl();
+  L.btn(c2,'h → 0⁺ ▶',false,function(){ L.play(0,1,4000,function(p){ h=3*Math.pow(0.0033,p); sh.set(h); upd(); }); });
+  L.btn(c2,'h → 0⁻ ▶',true,function(){ L.play(0,1,4000,function(p){ h=-3*Math.pow(0.0033,p); sh.set(h); upd(); }); });
+  var out=L.out();
+  function upd(){
+    ly.clear(); G.lay=ly.d;
+    G.curve(f,{},-2,5);
+    var d1=a-1, fa=f(a);
+    G.slope(a,fa,d1,{stroke:PINK,'stroke-width':1.8,'stroke-dasharray':'5 3'});
+    G.dot(a,fa,BLUE,5.5);
+    var tiny=Math.abs(h)<0.005;
+    if(!tiny){
+      var m=(f(a+h)-fa)/h;
+      G.slope(a,fa,m,{stroke:ORG,'stroke-width':2.4});
+      G.dot(a+h,f(a+h),ORG,5.5);
+      out.innerHTML='할선의 기울기 {f(a+h)−f(a)}/h = <b>'+fx(m,4)+'</b><br>접선의 기울기 f′(a) = a−1 = <b style="color:'+PINK+'">'+fx(d1,4)+'</b> (분홍 점선)<br>차이 <b>'+fx(Math.abs(m-d1),4)+'</b> → h→0 이면 둘이 같아져요.';
+    } else out.innerHTML='h=0 이면 평균변화율은 정의되지 않아요. <b>극한</b>으로 h→0 의 값을 구한 것이<br><span class="math">f′(a) = lim h→0 {f(a+h)−f(a)}/h = <b>'+fx(d1,2)+'</b></span>';
+  }
+  upd();
+});
+
+/* ================= part 2: #13~#30 ================= */
+
+lab(13,'점 x를 움직이며 f의 기울기가 f′ 그래프의 높이가 되는 것을 보세요',function(L){
+  var FN=[
+    {n:'x²',f:function(x){ return x*x; },d:function(x){ return 2*x; },fy:[-1,7],dy:[-5,5],fs:'f(x)=x²',ds:'f′(x)=2x'},
+    {n:'x³−3x',f:function(x){ return x*x*x-3*x; },d:function(x){ return 3*x*x-3; },fy:[-4,4],dy:[-4,8],fs:'f(x)=x³−3x',ds:'f′(x)=3x²−3'},
+    {n:'−x²+2',f:function(x){ return -x*x+2; },d:function(x){ return -2*x; },fy:[-5,3],dy:[-5,5],fs:'f(x)=−x²+2',ds:'f′(x)=−2x'}
+  ], fi=0, x0=-1;
+  L.tabs(FN.map(function(e){ return e.n; }),function(i){ fi=i; build(); });
+  var svg=L.svg('0 0 320 290','도함수');
+  var sg=S('g',{},svg), G1,G2,l1,l2;
+  var BA={x:34,y:8,w:274,h:118}, BB={x:34,y:160,w:274,h:112};
+  L.slider(L.ctrl(),'x',-2.5,2.5,0.05,-1,function(v){ x0=v; upd(); },function(v){ return fx(v,2); });
+  L.btn(L.ctrl(),'x 훑기 ▶',false,function(){ L.play(-2.5,2.5,5000,function(v){ x0=v; upd(); },null); });
+  var out=L.out();
+  function build(){
+    clr(sg); var e=FN[fi];
+    G1=Graph(sg,BA,{x:[-2.5,2.5],y:e.fy}); l1=G1.layers();
+    G2=Graph(sg,BB,{x:[-2.5,2.5],y:e.dy}); l2=G2.layers();
+    upd();
+  }
+  function upd(){
+    var e=FN[fi], m=e.d(x0);
+    l1.clear(); G1.lay=l1.d; l2.clear(); G2.lay=l2.d;
+    G1.curve(e.f,{stroke:BLUE});
+    G1.slope(x0,e.f(x0),m,{stroke:ORG,'stroke-width':2.2},1.2);
+    G1.dot(x0,e.f(x0),BLUE,5.5);
+    G2.curve(e.d,{stroke:'#BCD0F7','stroke-width':1.8});
+    G2.curve(e.d,{stroke:GRN,'stroke-width':3},-2.5,x0,200);
+    G2.line(x0,0,x0,m,{stroke:GRN,'stroke-dasharray':'3 3'});
+    G2.dot(x0,m,GRN,5.5);
+    S('text',{x:BA.x+8,y:BA.y+14,'font-size':11,'font-weight':700,fill:BLUE,text:e.fs},l1.o);
+    S('text',{x:BB.x+8,y:BB.y+14,'font-size':11,'font-weight':700,fill:GRN,text:e.ds},l2.o);
+    out.innerHTML='x = <b>'+fx(x0,2)+'</b>에서 접선의 기울기 = <b style="color:#B45309">'+fx(m,2)+'</b> → 아래 그래프 <span class="math">f′('+fx(x0,2)+')</span> 의 높이<br><span class="dim">x마다 접선의 기울기를 모아 만든 새로운 함수가 <b>도함수</b>예요.</span>';
+  }
+  build();
+});
+
+lab(14,'n과 x₀를 바꿔 (xⁿ)′ = n·xⁿ⁻¹ 을 확인해보세요',function(L){
+  var n=2,x0=1;
+  var svg=L.svg(VB1,'xⁿ의 도함수');
+  var G=Graph(svg,B1,{x:[-2,2],y:[-4,8]}), ly=G.layers();
+  var c=L.ctrl();
+  L.slider(c,'n',0,5,1,2,function(v){ n=v; upd(); });
+  L.slider(c,'x₀',-2,2,0.1,1,function(v){ x0=v; upd(); },function(v){ return fx(v,1); });
+  var out=L.out();
+  function upd(){
+    ly.clear(); G.lay=ly.d;
+    var f=function(x){ return Math.pow(x,n); }, d=function(x){ return n===0?0:n*Math.pow(x,n-1); };
+    G.curve(f,{stroke:BLUE});
+    G.curve(d,{stroke:GRN,'stroke-width':1.8,'stroke-dasharray':'5 3'});
+    var m=d(x0);
+    G.slope(x0,f(x0),m,{stroke:ORG,'stroke-width':2.2},1);
+    G.dot(x0,f(x0),BLUE,5.5); G.dot(x0,m,GRN,4.5);
+    S('text',{x:B1.x+8,y:B1.y+14,'font-size':11,'font-weight':700,fill:BLUE,text:'f(x) = x'+sup(n)+' (파랑)'},ly.o);
+    S('text',{x:B1.x+8,y:B1.y+28,'font-size':11,'font-weight':700,fill:GRN,text:'f′(x) = '+(n===0?'0':n===1?'1':n+'x'+(n-1===1?'':sup(n-1)))+' (초록 점선)'},ly.o);
+    out.innerHTML='<span class="math">(x<sup>'+n+'</sup>)′ = '+(n===0?'0 (상수의 도함수)':n+' · x<sup>'+(n-1)+'</sup>')+'</span><br>x = '+fx(x0,1)+' 에서 접선의 기울기 = <b>'+fx(m,2)+'</b> = 초록 곡선의 높이';
+  }
+  upd();
+});
+
+lab(15,'직사각형의 넓이 변화로 (fg)′ = f′g + fg′ 를 눈으로 확인해보세요',function(L){
+  var x=1,dx=0.5, f=function(x){ return x*x+1; }, g=function(x){ return x+1; };
+  var svg=L.svg('0 0 320 210','곱의 미분');
+  var c=L.ctrl();
+  L.slider(c,'x',0,1.5,0.1,1,function(v){ x=v; draw(); },function(v){ return fx(v,1); });
+  var sd=L.slider(c,'Δx',0.05,1,0.05,0.5,function(v){ dx=v; draw(); },function(v){ return fx(v,2); });
+  L.btn(L.ctrl(),'Δx → 0 ▶',false,function(){ L.play(0,1,3500,function(p){ dx=Math.max(0.05,1*Math.pow(0.05,p)); sd.set(Math.round(dx*100)/100); draw(); }); });
+  var out=L.out();
+  var sc=34, ox=50, oy=190;
+  function draw(){
+    clr(svg);
+    var F=f(x),Gv=g(x),dF=f(x+dx)-F,dG=g(x+dx)-Gv;
+    var W=F*sc,H=Gv*sc,w2=dF*sc,h2=dG*sc;
+    S('rect',{x:ox,y:oy-H,width:W,height:H,fill:BLUE,'fill-opacity':.25,stroke:BLUE},svg);
+    S('rect',{x:ox+W,y:oy-H,width:w2,height:H,fill:GRN,'fill-opacity':.45,stroke:GRN},svg);
+    S('rect',{x:ox,y:oy-H-h2,width:W,height:h2,fill:ORG,'fill-opacity':.45,stroke:ORG},svg);
+    S('rect',{x:ox+W,y:oy-H-h2,width:w2,height:h2,fill:PINK,'fill-opacity':.6,stroke:PINK},svg);
+    S('text',{x:ox+W/2,y:oy-H/2+4,'text-anchor':'middle','font-size':11,'font-weight':700,fill:INK,text:(W>70?'f·g = ':'')+fx(F*Gv,2)},svg);
+    S('text',{x:ox+W+w2/2,y:oy-H/2+4,'text-anchor':'middle','font-size':10,'font-weight':700,fill:'#047857',text:w2>26?'Δf·g':''},svg);
+    S('text',{x:ox+W/2,y:oy-H-h2/2+4,'text-anchor':'middle','font-size':10,'font-weight':700,fill:'#B45309',text:h2>14?'f·Δg':''},svg);
+    S('text',{x:ox+W/2,y:oy+12,'text-anchor':'middle','font-size':10,fill:GRY,text:'가로 f(x) = '+fx(F,2)},svg);
+    S('text',{x:ox-4,y:oy-H/2,'text-anchor':'end','font-size':10,fill:GRY,text:'g='+fx(Gv,1)},svg);
+    var t1=dF/dx*Gv, t2=F*dG/dx, t3=dF*dG/dx, tr=dF*dG, dd=(f(x+dx)*g(x+dx)-F*Gv)/dx;
+    out.innerHTML='<span class="math">f(x)=x²+1, g(x)=x+1</span> · 넓이의 변화 Δ(fg) = <span style="color:#047857">Δf·g</span> + <span style="color:#B45309">f·Δg</span> + <span style="color:'+PINK+'">Δf·Δg</span><br>Δx로 나누면: <b>'+fx(t1,3)+'</b> + <b>'+fx(t2,3)+'</b> + <b>'+fx(t3,3)+'</b> = '+fx(dd,3)+'<br>Δx→0 이면 분홍 모서리(Δf·Δg/Δx)는 <b>0</b>으로 사라져요 → <span class="math">(fg)′ = f′g + fg′ = '+fx(2*x*Gv+F,3)+'</span>';
+  }
+  draw();
+});
+
+lab(16,'곡선 위의 점, 곡선 밖의 점에서 그은 접선을 확인해보세요',function(L){
+  var mode=0,a=1,p=1,q=-1, f=function(x){ return x*x; };
+  L.tabs(['곡선 위의 점 (a, f(a))','곡선 밖의 점 P'],function(i){ mode=i; ha.show(i===0); hp.show(i===1); upd(); });
+  var svg=L.svg(VB1,'접선의 방정식');
+  var G=Graph(svg,B1,{x:[-3,3],y:[-3,9]}), ly=G.layers();
+  var ha=handle(svg,0,0,'A',-12,-10), hp=handle(svg,0,0,'P',-12,-10);
+  hp.show(false);
+  var out=L.out(); L.hint('f(x)=x² · 점을 끌어보세요');
+  function eq(m,b){ return 'y = '+(m===0?'':(Math.abs(m-1)<1e-9?'':Math.abs(m+1)<1e-9?'−':fx(m,2))+'x')+(b===0?'':(m===0?'':' ')+(b<0?'− ':(m===0?'':'+ '))+fx(Math.abs(b),2)); }
+  function upd(){
+    ly.clear(); G.lay=ly.d;
+    G.curve(f,{stroke:BLUE});
+    if(mode===0){
+      var m=2*a;
+      G.slope(a,f(a),m,{stroke:ORG,'stroke-width':2.2},2);
+      ha.set(G.X(a),G.Y(f(a)));
+      out.innerHTML='접점 (<b>'+fx(a,1)+'</b>, <b>'+fx(f(a),2)+'</b>) · 기울기 f′(a) = 2a = <b>'+fx(m,2)+'</b><br><span class="math">y − f(a) = f′(a)(x − a)</span> → <b>'+eq(m,f(a)-m*a)+'</b>';
+    } else {
+      hp.set(G.X(p),G.Y(q));
+      G.dot(p,q,PINK,5);
+      var disc=p*p-q;
+      if(disc>1e-9){
+        var s=Math.sqrt(disc), ts=[p-s,p+s], cols=[ORG,GRN], txt=[];
+        ts.forEach(function(t,i){
+          G.slope(t,f(t),2*t,{stroke:cols[i],'stroke-width':2},3);
+          G.dot(t,f(t),cols[i],5);
+          txt.push('접점 x=<b>'+fx(t,2)+'</b> → '+eq(2*t,-t*t));
+        });
+        out.innerHTML='P('+fx(p,1)+', '+fx(q,1)+') 에서 접선이 <b>2개</b><br>'+txt.join('<br>')+'<br><span class="dim">접점을 (t, t²)로 놓고 접선이 P를 지나도록 t를 구한 거예요: t² − 2·'+fx(p,1)+'·t + '+fx(q,1)+' = 0</span>';
+      } else if(disc>-1e-9){ G.slope(p,f(p),2*p,{stroke:ORG,'stroke-width':2},3); out.innerHTML='P가 곡선 위에 있어요 → 접선은 <b>1개</b>'; }
+      else out.innerHTML='<b class="bad-t">P가 곡선 안쪽(위쪽)에 있어요 → 접선을 그을 수 없어요.</b>';
+    }
+  }
+  drag(svg,ha,function(x){ a=cl(Math.round(G.ix(x)*10)/10,-2.9,2.9); upd(); });
+  drag(svg,hp,function(x,y){ p=cl(Math.round(G.ix(x)*10)/10,-2.9,2.9); q=cl(Math.round(G.iy(y)*10)/10,-2.9,8.9); upd(); });
+  upd();
+});
+
+lab(18,'a를 끌어 f(a)=f(b)인 b를 찾고, f′(c)=0 인 c를 확인해보세요',function(L){
+  var mode=0,a=-1.5;
+  var f=function(x){ return x*x*x-3*x; };
+  L.tabs(['f(x)=x³−3x','반례 f(x)=|x|'],function(i){ mode=i; ha.show(i===0); upd(); });
+  var svg=L.svg(VB1,'롤의 정리');
+  var G=Graph(svg,B1,{x:[-3,3],y:[-4,4]}), ly=G.layers();
+  var ha=handle(svg,0,0,'a',0,-12);
+  var lights=L.lights(['[a, b]에서 연속','(a, b)에서 미분가능','f(a) = f(b)','f′(c)=0 인 c 존재']);
+  var out=L.out(); L.hint('a를 끌어보세요 (b는 f(b)=f(a)가 되도록 자동으로 정해져요)');
+  function upd(){
+    ly.clear(); G.lay=ly.d;
+    if(mode===0){
+      G.curve(f,{stroke:BLUE});
+      var s=12-3*a*a, b=s>=0?(-a+Math.sqrt(s))/2:a;
+      var ok=b-a>0.05;
+      ha.set(G.X(a),G.Y(f(a)));
+      G.dot(a,f(a),ORG,5.5);
+      if(ok){
+        G.dot(b,f(b),ORG,5.5);
+        G.line(a,f(a),b,f(b),{stroke:ORG,'stroke-dasharray':'5 3'});
+        G.line(a,0,b,0,{stroke:ORG,'stroke-width':5,'stroke-opacity':.6});
+        var cs=roots(function(x){ return 3*x*x-3; },a,b);
+        cs.forEach(function(c){ G.slope(c,f(c),0,{stroke:GRN,'stroke-width':2.2},0.9); G.dot(c,f(c),GRN,5.5); });
+        lights.set(0,true); lights.set(1,true); lights.set(2,true); lights.set(3,cs.length>0);
+        out.innerHTML='a = <b>'+fx(a,2)+'</b>, b = <b>'+fx(b,2)+'</b> → f(a)=f(b)=<b>'+fx(f(a),2)+'</b><br>'+(cs.length?'<b class="ok">c = '+cs.map(function(c){ return fx(c,2); }).join(', ')+'</b> 에서 접선이 수평 (f′(c)=0)':'구간 안에 f′(c)=0 인 c가 없어요');
+      } else {
+        [0,1,2,3].forEach(function(i){ lights.set(i,false); });
+        out.innerHTML='이 a에서는 f(a)=f(b) 가 되는 다른 b가 없어요. a를 더 왼쪽으로 옮겨보세요.';
+      }
+    } else {
+      var g=function(x){ return Math.abs(x); };
+      G.curve(g,{stroke:BLUE},-2,2);
+      G.dot(-2,2,ORG,5.5); G.dot(2,2,ORG,5.5);
+      G.line(-2,2,2,2,{stroke:ORG,'stroke-dasharray':'5 3'});
+      G.open(0,0,RED,5.5);
+      lights.set(0,true); lights.set(1,false); lights.set(2,true); lights.set(3,false);
+      out.innerHTML='f(−2)=f(2)=2 이지만 x=0에서 <b class="bad-t">미분가능하지 않아서</b> 수평 접선이 없어요.<br><span class="dim">롤의 정리는 연속·미분가능·f(a)=f(b) 세 조건이 모두 필요해요.</span>';
+    }
+  }
+  drag(svg,ha,function(x){ a=cl(Math.round(G.ix(x)*20)/20,-2,0.9); upd(); });
+  upd();
+});
+
+lab(19,'a, b를 끌어 할선과 평행한 접선이 되는 c를 찾아보세요',function(L){
+  var a=-2,b=2, f=function(x){ return x*x*x/3-x; };
+  var svg=L.svg(VB1,'평균값 정리');
+  var G=Graph(svg,B1,{x:[-3,3],y:[-3,3]}), ly=G.layers();
+  var ha=handle(svg,0,0,'a',-12,-10), hb=handle(svg,0,0,'b',12,-10);
+  var out=L.out(); L.hint('f(x)=x³/3−x · 점 A, B를 끌어보세요');
+  function upd(){
+    ly.clear(); G.lay=ly.d;
+    G.curve(f,{stroke:BLUE});
+    var m=(f(b)-f(a))/(b-a);
+    G.slope(a,f(a),m,{stroke:ORG,'stroke-width':2.2},6);
+    ha.set(G.X(a),G.Y(f(a))); hb.set(G.X(b),G.Y(f(b)));
+    var cs=roots(function(x){ return x*x-1-m; },a,b);
+    cs.forEach(function(c){ G.slope(c,f(c),m,{stroke:GRN,'stroke-width':2.2},2); G.dot(c,f(c),GRN,5.5); });
+    out.innerHTML='할선의 기울기 {f(b)−f(a)}/(b−a) = <b>'+fx(m,3)+'</b><br>'+(cs.length?'<b class="ok">f′(c) = '+fx(m,3)+'</b> 인 c = <b>'+cs.map(function(c){ return fx(c,2); }).join(', ')+'</b> (초록 접선이 할선과 평행)':'(a, b)에서 f′(c)=할선 기울기인 점을 찾지 못했어요');
+  }
+  drag(svg,ha,function(x){ var v=cl(Math.round(G.ix(x)*10)/10,-2.5,2.4); if(v>b-0.3) v=b-0.3; a=v; upd(); });
+  drag(svg,hb,function(x){ var v=cl(Math.round(G.ix(x)*10)/10,-2.4,2.5); if(v<a+0.3) v=a+0.3; b=v; upd(); });
+  upd();
+});
+
+lab(20,'x를 움직이며 f′의 부호와 증가·감소를 확인해보세요',function(L){
+  var x0=-2, f=function(x){ return x*x*x-3*x*x-9*x+1; }, d=function(x){ return 3*x*x-6*x-9; };
+  var svg=L.svg('0 0 320 290','증가와 감소');
+  var BA={x:34,y:8,w:274,h:122}, BB={x:34,y:160,w:274,h:112};
+  var G1=Graph(svg,BA,{x:[-3,5],y:[-30,12]}), G2=Graph(svg,BB,{x:[-3,5],y:[-14,38]});
+  var l1=G1.layers(), l2=G2.layers();
+  var sx=L.slider(L.ctrl(),'x',-3,5,0.05,-2,function(v){ x0=v; upd(); },function(v){ return fx(v,2); });
+  L.btn(L.ctrl(),'x 훑기 ▶',false,function(){ L.play(-3,5,6000,function(v){ x0=v; sx.set(v); upd(); }); });
+  var out=L.out();
+  function upd(){
+    l1.clear(); l2.clear(); G1.lay=l1.d; G2.lay=l2.d;
+    [[-3,-1,BLUE],[-1,3,ORG],[3,5,BLUE]].forEach(function(s){ G1.curve(f,{stroke:s[2]},s[0],s[1],120); });
+    G2.curve(d,{stroke:GRY,'stroke-width':1.8});
+    G2.signed(d,-3,5,[-1,3],BLUE,ORG,.18);
+    var m=d(x0), col=m>1e-9?BLUE:m<-1e-9?ORG:GRN;
+    G1.slope(x0,f(x0),m,{stroke:col,'stroke-width':2.2},1.1);
+    G1.dot(x0,f(x0),col,5.5);
+    G2.line(x0,0,x0,m,{stroke:col,'stroke-dasharray':'3 3'});
+    G2.dot(x0,m,col,5.5);
+    S('text',{x:BA.x+8,y:BA.y+14,'font-size':11,'font-weight':700,fill:INK,text:'f(x)=x³−3x²−9x+1'},l1.o);
+    S('text',{x:BB.x+8,y:BB.y+14,'font-size':11,'font-weight':700,fill:INK,text:'f′(x)=3(x+1)(x−3)'},l2.o);
+    out.innerHTML='f′('+fx(x0,2)+') = <b>'+fx(m,2)+'</b> → '+(m>1e-9?'<b style="color:'+BLUE+'">f′ > 0 : 증가</b>':m<-1e-9?'<b style="color:#B45309">f′ < 0 : 감소</b>':'<b class="ok">f′ = 0 : 증가↔감소가 바뀌는 점</b>')+'<br><span class="dim">f′>0 인 구간(파랑)에서 증가, f′<0 인 구간(주황)에서 감소</span>';
+  }
+  upd();
+});
+
+lab(21,'f′의 부호 변화로 극대·극소를 판단해보세요',function(L){
+  var FN=[
+    {n:'x³−3x',f:function(x){ return x*x*x-3*x; },d:function(x){ return 3*x*x-3; },cr:[-1,1],dx:[-2.5,2.5],dy:[-4,4]},
+    {n:'x³',f:function(x){ return x*x*x; },d:function(x){ return 3*x*x; },cr:[0],dx:[-2,2],dy:[-8,8]},
+    {n:'x⁴−2x²',f:function(x){ return Math.pow(x,4)-2*x*x; },d:function(x){ return 4*x*x*x-4*x; },cr:[-1,0,1],dx:[-2,2],dy:[-2,5]}
+  ], fi=0, x0=-2;
+  var svg0;
+  L.tabs(FN.map(function(e){ return e.n; }),function(i){ fi=i; x0=FN[i].dx[0]+0.2; sx.range(FN[i].dx[0],FN[i].dx[1],x0); build(); });
+  var svg=L.svg('0 0 320 214','극대와 극소');
+  var sg=S('g',{},svg), G, ly;
+  var B={x:34,y:8,w:274,h:150};
+  var sx=L.slider(L.ctrl(),'x',-2.5,2.5,0.05,-2,function(v){ x0=v; upd(); },function(v){ return fx(v,2); });
+  sx.range(-2.5,2.5,-2.2); x0=-2.2;
+  var out=L.out();
+  function build(){ clr(sg); var e=FN[fi]; G=Graph(sg,B,{x:e.dx,y:e.dy}); ly=G.layers(); upd(); }
+  function upd(){
+    var e=FN[fi]; ly.clear(); G.lay=ly.d;
+    var pts=[e.dx[0]].concat(e.cr).concat([e.dx[1]]), i;
+    for(i=0;i<pts.length-1;i++){
+      var mid=(pts[i]+pts[i+1])/2, sg2=e.d(mid)>0;
+      var x1=G.X(pts[i]), x2=G.X(pts[i+1]);
+      S('rect',{x:x1,y:170,width:x2-x1,height:20,fill:sg2?BLUE:ORG,'fill-opacity':.28,stroke:'#fff'},ly.o);
+      S('text',{x:(x1+x2)/2,y:184,'text-anchor':'middle','font-size':12,'font-weight':700,fill:sg2?BLUE:'#B45309',text:sg2?'f′ > 0  ↗':'f′ < 0  ↘'},ly.o);
+      G.curve(e.f,{stroke:sg2?BLUE:ORG},pts[i],pts[i+1],120);
+    }
+    var info=[];
+    e.cr.forEach(function(c){
+      var l=sgnOf(e.d(c-0.02)), r=sgnOf(e.d(c+0.02)), y=e.f(c);
+      if(l>0&&r<0){ G.dot(c,y,RED,6.5); G.text(c+0.1,y+0.5,'극대',{fill:RED}); info.push('x='+c+' : + → − <b style="color:'+RED+'">극대</b> (극댓값 '+fx(y,1)+')'); }
+      else if(l<0&&r>0){ G.dot(c,y,GRN,6.5); G.text(c+0.1,y-0.9,'극소',{fill:GRN}); info.push('x='+c+' : − → + <b style="color:'+GRN+'">극소</b> (극솟값 '+fx(y,1)+')'); }
+      else { G.dot(c,y,GRY,6); info.push('x='+c+' : f′(c)=0 이지만 부호가 안 바뀜 → <b>극값 아님</b>'); }
+    });
+    var m=e.d(x0);
+    G.slope(x0,e.f(x0),m,{stroke:PINK,'stroke-width':2},0.9);
+    G.dot(x0,e.f(x0),PINK,5);
+    out.innerHTML='x='+fx(x0,2)+' : f′ = <b>'+fx(m,2)+'</b><br>'+info.join('<br>');
+  }
+  build();
+});
+
+lab(22,'교점·해의 개수를 곡선의 모양으로 따져보세요',function(L){
+  var mode=0,k=0,c=0;
+  L.tabs(['x³−3x = k','x³ = 3x + c'],function(i){ mode=i; sk.show(i===0); sc.show(i===1); upd(); });
+  var svg=L.svg(VB1,'그래프의 활용');
+  var G=Graph(svg,B1,{x:[-3,3],y:[-6,6]}), ly=G.layers();
+  var cc=L.ctrl();
+  var sk=L.slider(cc,'k',-4,4,0.05,0,function(v){ k=v; upd(); },function(v){ return fx(v,2); });
+  var sc=L.slider(cc,'c',-4,4,0.05,0,function(v){ c=v; upd(); },function(v){ return fx(v,2); });
+  sc.show(false);
+  var out=L.out();
+  function count(h,crit){
+    var rs=roots(h,-3,3), tang=[];
+    crit.forEach(function(xc){ if(Math.abs(h(xc))<0.012) tang.push(xc); });
+    var keep=rs.filter(function(r){ return tang.every(function(t){ return Math.abs(r-t)>0.12; }); });
+    return {pts:keep.concat(tang),tang:tang};
+  }
+  function upd(){
+    ly.clear(); G.lay=ly.d;
+    var f,g,h,line;
+    if(mode===0){ f=function(x){ return x*x*x-3*x; }; g=function(){ return k; }; }
+    else { f=function(x){ return x*x*x; }; g=function(x){ return 3*x+c; }; }
+    h=function(x){ return f(x)-g(x); };
+    G.curve(f,{stroke:BLUE});
+    G.curve(g,{stroke:ORG,'stroke-width':2.2},-3,3,20);
+    var r=count(h,[-1,1]);
+    r.pts.forEach(function(x){ G.dot(x,g(x),r.tang.indexOf(x)>=0?RED:GRN,6); });
+    var n=r.pts.length+r.tang.length*0;
+    var s=(mode===0?'방정식 x³−3x = k':'방정식 x³ = 3x + c')+' 의 서로 다른 실근 <b style="font-size:1.1em">'+n+'개</b>';
+    if(r.tang.length) s+=' <b class="bad-t">(접해요 → 중근)</b>';
+    s+='<br><span class="dim">'+(mode===0?'극댓값 2, 극솟값 −2: k가 −2와 2 사이면 3개, ±2면 2개, 그 밖이면 1개':'h(x)=x³−3x−c 의 극값 ∓2: c가 −2와 2 사이면 교점 3개, ±2면 2개, 그 밖이면 1개')+'</span>';
+    out.innerHTML=s;
+  }
+  upd();
+});
+
+lab(23,'시각 t를 움직이며 위치·속도·가속도를 한눈에 확인해보세요',function(L){
+  var t=0.5, x=function(t){ return t*t*t-6*t*t+9*t; }, v=function(t){ return 3*t*t-12*t+9; }, a=function(t){ return 6*t-12; };
+  var svg=L.svg('0 0 320 214','속도와 가속도');
+  var B={x:34,y:8,w:274,h:118};
+  var G=Graph(svg,B,{x:[0,4.2],y:[-1,7]},{tx:1,ty:2,xn:'t'}), ly=G.layers();
+  var st=L.slider(L.ctrl(),'t',0,4.2,0.02,0.5,function(val){ t=val; upd(); },function(val){ return fx(val,2); });
+  L.btn(L.ctrl(),'움직이기 ▶',false,function(){ L.play(0,4.2,7000,function(val){ t=val; st.set(val); upd(); }); });
+  var out=L.out();
+  var tx0=34,tx1=308,ty=172;
+  function TX(p){ return tx0+(p+1)/8*(tx1-tx0); }
+  function arrow(x1,y,len,col,lab_){
+    if(Math.abs(len)<1) return;
+    S('line',{x1:x1,y1:y,x2:x1+len,y2:y,stroke:col,'stroke-width':3,'stroke-linecap':'round'},ly.o);
+    var s=len>0?1:-1;
+    S('path',{d:'M'+(x1+len)+','+y+' l'+(-8*s)+',-5 l0,10 Z',fill:col},ly.o);
+    S('text',{x:x1+len/2,y:y-6,'text-anchor':'middle','font-size':10,'font-weight':700,fill:col,text:lab_},ly.o);
+  }
+  function upd(){
+    ly.clear(); G.lay=ly.d;
+    G.curve(x,{stroke:BLUE},0,4.2,180);
+    G.slope(t,x(t),v(t),{stroke:ORG,'stroke-width':2},0.7);
+    G.dot(t,x(t),BLUE,5.5);
+    S('line',{x1:tx0,y1:ty,x2:tx1,y2:ty,stroke:'#8795A8','stroke-width':2},ly.o);
+    for(var i=-1;i<=7;i+=2){
+      S('line',{x1:TX(i),y1:ty-4,x2:TX(i),y2:ty+4,stroke:GRY},ly.o);
+      S('text',{x:TX(i),y:ty+16,'text-anchor':'middle','font-size':9,fill:GRY,text:ms(i)},ly.o);
+    }
+    var bx=TX(x(t));
+    arrow(bx,ty-30,cl(v(t)*4,-90,90),BLUE,'v');
+    arrow(bx,ty-52,cl(a(t)*5,-90,90),PINK,'a');
+    S('circle',{cx:bx,cy:ty,r:8,fill:INK,stroke:'#fff','stroke-width':2},ly.o);
+    var vv=v(t), dir=Math.abs(vv)<0.05?'<b class="ok">순간 정지 (v=0)</b>':vv>0?'양의 방향으로 이동':'음의 방향으로 이동';
+    var sp=Math.abs(vv)<0.05?'':'; 속력 '+fx(Math.abs(vv),2);
+    var acc=a(t)*vv>0.05?'속력이 <b>빨라져요</b>':(a(t)*vv<-0.05?'속력이 <b>느려져요</b>':'');
+    out.innerHTML='t='+fx(t,2)+' : 위치 x = <b>'+fx(x(t),2)+'</b>, 속도 v = x′ = <b style="color:'+BLUE+'">'+fx(vv,2)+'</b>, 가속도 a = v′ = <b style="color:'+PINK+'">'+fx(a(t),2)+'</b><br>'+dir+(acc?' · '+acc:'');
+  }
+  upd();
+});
+
+lab(24,'C를 바꿔도 접선의 기울기가 같은 곡선족을 확인해보세요',function(L){
+  var C=0,x0=1, f=function(x){ return 3*x*x-2*x; }, F=function(x,c){ return x*x*x-x*x+c; };
+  var svg=L.svg(VB1,'부정적분');
+  var G=Graph(svg,B1,{x:[-1.5,2],y:[-5,6]}), ly=G.layers();
+  var cc=L.ctrl();
+  L.slider(cc,'C',-3,3,0.5,0,function(v){ C=v; upd(); },function(v){ return fx(v,1); });
+  L.slider(cc,'x₀',-1.2,1.8,0.1,1,function(v){ x0=v; upd(); },function(v){ return fx(v,1); });
+  var out=L.out();
+  function upd(){
+    ly.clear(); G.lay=ly.d;
+    var k;
+    for(k=-3;k<=3;k++){
+      G.curve(function(x){ return F(x,k); },{stroke:'#9DB7EF','stroke-width':1.2,'stroke-opacity':.7});
+      var m=f(x0);
+      G.slope(x0,F(x0,k),m,{stroke:'#F2B45B','stroke-width':1.2,'stroke-opacity':.8},0.35);
+    }
+    G.curve(function(x){ return F(x,C); },{stroke:BLUE,'stroke-width':3});
+    G.slope(x0,F(x0,C),f(x0),{stroke:ORG,'stroke-width':2.4},0.8);
+    G.dot(x0,F(x0,C),BLUE,5.5);
+    out.innerHTML='F(x) = x³ − x² + <b>'+fx(C,1)+'</b> · x₀=<b>'+fx(x0,1)+'</b> 에서 접선의 기울기 = <b>'+fx(f(x0),2)+'</b><br><span class="math">∫(3x²−2x)dx = x³ − x² + C</span> — C가 달라도 기울기는 모두 같아서 곡선이 위아래로 <b>평행이동</b>한 모양이에요.';
+  }
+  upd();
+});
+
+lab(25,'계수를 바꿔 적분하고, 미분으로 다시 확인해보세요',function(L){
+  var A=3,Bc=-2,Cc=1,x0=1;
+  var svg=L.svg(VB1,'부정적분 계산');
+  var G=Graph(svg,B1,{x:[-3,3],y:[-12,12]}), ly=G.layers();
+  var c1=L.ctrl();
+  L.slider(c1,'a',-3,3,1,3,function(v){ A=v; upd(); });
+  L.slider(c1,'b',-4,4,1,-2,function(v){ Bc=v; upd(); });
+  L.slider(c1,'c',-4,4,1,1,function(v){ Cc=v; upd(); });
+  L.slider(L.ctrl(),'x₀',-2.5,2.5,0.1,1,function(v){ x0=v; upd(); },function(v){ return fx(v,1); });
+  var out=L.out();
+  function term(coef,pow,first){
+    if(!coef) return '';
+    var sgn=coef<0?'−':'+', abs=Math.abs(coef), body;
+    var cs=(abs===1&&pow>0)?'':String(abs);
+    body=cs+(pow===0?'':pow===1?'x':'x<sup>'+pow+'</sup>');
+    if(first) return (coef<0?'−':'')+body;
+    return ' '+sgn+' '+body;
+  }
+  function term2(n,d,pow,first){
+    if(!n) return '';
+    var g=gcd(n,d), nn=n/g, dd=d/g, sgn=nn<0?'−':'+', abs=Math.abs(nn);
+    var cs=dd===1?(abs===1?'':String(abs)):fracH(abs,dd);
+    var body=cs+'x'+(pow===1?'':'<sup>'+pow+'</sup>');
+    if(first) return (nn<0?'−':'')+body;
+    return ' '+sgn+' '+body;
+  }
+  function upd(){
+    ly.clear(); G.lay=ly.d;
+    var f=function(x){ return A*x*x+Bc*x+Cc; }, F=function(x){ return A*x*x*x/3+Bc*x*x/2+Cc*x; };
+    G.curve(f,{stroke:BLUE});
+    G.curve(F,{stroke:GRN,'stroke-width':2.6});
+    G.slope(x0,F(x0),f(x0),{stroke:ORG,'stroke-width':2},0.9);
+    G.dot(x0,F(x0),GRN,5); G.dot(x0,f(x0),BLUE,4.5);
+    S('text',{x:B1.x+8,y:B1.y+14,'font-size':11,'font-weight':700,fill:BLUE,text:'f(x) (파랑)'},ly.o);
+    S('text',{x:B1.x+8,y:B1.y+28,'font-size':11,'font-weight':700,fill:GRN,text:'F(x) (초록, C=0)'},ly.o);
+    var fparts=[],firstF=true;
+    [[A,2],[Bc,1],[Cc,0]].forEach(function(t){ if(t[0]){ fparts.push(term(t[0],t[1],firstF)); firstF=false; } });
+    var Fparts=[],firstG=true;
+    [[A,3,3],[Bc,2,2],[Cc,1,1]].forEach(function(t){ if(t[0]){ Fparts.push(term2(t[0],t[2],t[1],firstG)); firstG=false; } });
+    var h=Math.abs(D(F,x0)-f(x0));
+    out.innerHTML='<span class="math">f(x) = '+(fparts.join('')||'0')+'</span><br><span class="math">∫f(x)dx = '+(Fparts.join('')||'0')+(Fparts.length?' + C':'C')+'</span><br>검산: <span class="math">F′('+fx(x0,1)+')</span> = <b>'+fx(D(F,x0),3)+'</b> = <span class="math">f('+fx(x0,1)+')</span> = <b>'+fx(f(x0),3)+'</b> '+(h<1e-3?'<span class="ok">✓ 일치</span>':'');
+  }
+  upd();
+});
+
+lab(26,'직사각형 개수 n을 늘려 넓이의 극한(정적분)에 다가가보세요',function(L){
+  var FN=[
+    {n:'x²',f:function(x){ return x*x; },I:1/3,dy:[-0.2,1.2],s:'x²'},
+    {n:'x³',f:function(x){ return x*x*x; },I:1/4,dy:[-0.2,1.2],s:'x³'},
+    {n:'x²−1/2',f:function(x){ return x*x-0.5; },I:1/3-0.5,dy:[-0.7,0.7],s:'x²−1/2'}
+  ], fi=0, n=4;
+  L.tabs(FN.map(function(e){ return e.n; }),function(i){ fi=i; build(); });
+  var svg=L.svg(VB1,'구분구적법');
+  var sg=S('g',{},svg), G, ly;
+  var cc=L.ctrl();
+  var sn=L.slider(cc,'n',1,60,1,4,function(v){ n=v; upd(); });
+  L.btn(cc,'n 늘리기 ▶',false,function(){ L.play(1,60,6000,function(v){ n=Math.round(v); sn.set(n); upd(); }); });
+  var out=L.out();
+  function build(){ clr(sg); var e=FN[fi]; G=Graph(sg,B1,{x:[-0.2,1.2],y:e.dy}); ly=G.layers(); upd(); }
+  function upd(){
+    var e=FN[fi]; ly.clear(); G.lay=ly.d;
+    var i,S_=0,w=1/n;
+    for(i=1;i<=n;i++){
+      var xr=i*w, y=e.f(xr), x0=G.X((i-1)*w), x1=G.X(xr), y0=G.Y(0), y1=G.Y(y);
+      S_+=y*w;
+      S('rect',{x:x0,y:Math.min(y0,y1),width:x1-x0,height:Math.abs(y1-y0),fill:y>=0?BLUE:ORG,'fill-opacity':.3,stroke:y>=0?BLUE:ORG,'stroke-width':n>30?0.4:1},ly.d);
+    }
+    G.curve(e.f,{stroke:INK,'stroke-width':2.2},0,1,120);
+    out.innerHTML='n = <b>'+n+'</b> · 직사각형 넓이의 합 <span class="math">S<sub>n</sub> = Σ f(k/n)·(1/n)</span> = <b>'+fx(S_,4)+'</b><br>정적분 <span class="math">∫<sub>0</sub><sup>1</sup> '+e.s+' dx</span> = <b>'+fx(e.I,4)+'</b> · 차이 <b>'+fx(Math.abs(S_-e.I),4)+'</b><br><span class="dim">n→∞ 일 때 S<sub>n</sub>의 극한이 정적분이에요.</span>';
+  }
+  build();
+});
+
+lab(27,'넓이 함수 A(x)와 F(b)−F(a)를 직접 비교해보세요',function(L){
+  var mode=0,x=1.5,a=0,b=2;
+  var f=function(t){ return 3*t*t-1; }, F=function(t){ return t*t*t-t; };
+  L.tabs(['A(x)=∫ₐˣ f(t)dt','∫ₐᵇ f = F(b)−F(a)'],function(i){ mode=i; sx.show(i===0); sa.show(i===1); sb.show(i===1); upd(); });
+  var svg=L.svg(VB1,'미적분의 기본정리');
+  var G=Graph(svg,B1,{x:[-1.5,2.5],y:[-3,12]},{xn:'t'}), ly=G.layers();
+  var cc=L.ctrl();
+  var sx=L.slider(cc,'x',-1,2.5,0.05,1.5,function(v){ x=v; upd(); },function(v){ return fx(v,2); });
+  var sa=L.slider(cc,'a',-1,2,0.1,0,function(v){ a=v; upd(); },function(v){ return fx(v,1); });
+  var sb=L.slider(cc,'b',-1,2.5,0.1,2,function(v){ b=v; upd(); },function(v){ return fx(v,1); });
+  sa.show(false); sb.show(false);
+  var out=L.out();
+  function upd(){
+    ly.clear(); G.lay=ly.d;
+    var lo,hi;
+    if(mode===0){ lo=0; hi=x; } else { lo=a; hi=b; }
+    var rts=[-1/Math.sqrt(3),1/Math.sqrt(3)];
+    if(Math.abs(hi-lo)>1e-6) G.signed(f,lo,hi,rts,BLUE,ORG,.35);
+    G.curve(f,{stroke:INK,'stroke-width':2.4},-1.5,2.5);
+    S('text',{x:B1.x+8,y:B1.y+14,'font-size':11,'font-weight':700,fill:INK,text:'f(t) = 3t² − 1'},ly.o);
+    G.dot(hi,0,ORG,5); if(mode===1) G.dot(lo,0,BLUE,5);
+    var area=integ(f,lo,hi);
+    if(mode===0){
+      out.innerHTML='A(x) = ∫<sub>0</sub><sup>x</sup> f(t)dt = <b>'+fx(area,3)+'</b> (파랑 +, 주황 −)<br>A′(x) = f(x) = 3·'+fx(x,2)+'² − 1 = <b>'+fx(f(x),3)+'</b> · 수치 미분 <b>'+fx(D(function(u){ return integ(f,0,u); },x),3)+'</b> ✓<br><span class="dim">넓이 함수를 미분하면 원래 함수 f가 돼요.</span>';
+    } else {
+      out.innerHTML='그래프의 넓이(부호 포함) <span class="math">∫<sub>a</sub><sup>b</sup> f(t)dt</span> = <b>'+fx(area,3)+'</b><br><span class="math">F(b)−F(a)</span> = ('+fx(F(b),2)+') − ('+fx(F(a),2)+') = <b>'+fx(F(b)-F(a),3)+'</b> ✓ (F(t)=t³−t)<br><span class="dim">넓이를 일일이 구하지 않아도 부정적분 F의 값 차이로 구해요.</span>';
+    }
+  }
+  upd();
+});
+
+lab(28,'구간을 나누고, 상수배와 합이 적분에서도 성립하는지 확인해보세요',function(L){
+  var mode=0,a=0.5,b=4,c=2,k=1;
+  L.tabs(['구간 나누기','상수배와 합'],function(i){ mode=i; sk.show(i===1); build(); });
+  var svg=L.svg(VB1,'정적분의 성질');
+  var sg=S('g',{},svg), G, ly;
+  var ha=handle(svg,0,0,'a',0,22), hb=handle(svg,0,0,'b',0,22), hc=handle(svg,0,0,'c',0,22);
+  var sk=L.slider(L.ctrl(),'k',-2,2,0.5,1,function(v){ k=v; upd(); },function(v){ return fx(v,1); });
+  sk.show(false);
+  var out=L.out(); L.hint('f(x)=½(x−2)²+1 · a, b, c를 끌어보세요 (구간 나누기)');
+  var f0=function(x){ return 0.5*(x-2)*(x-2)+1; };
+  function build(){
+    clr(sg);
+    G=mode===0?Graph(sg,B1,{x:[0,5],y:[0,6]}):Graph(sg,B1,{x:[-0.5,2.5],y:[-3,6]});
+    ly=G.layers();
+    [ha,hb,hc].forEach(function(h){ h.show(mode===0); });
+    upd();
+  }
+  function upd(){
+    ly.clear(); G.lay=ly.d;
+    if(mode===0){
+      G.area(f0,Math.min(a,c),Math.max(a,c),BLUE,.3,null,60);
+      G.area(f0,Math.min(c,b),Math.max(c,b),ORG,.3,null,60);
+      G.curve(f0,{stroke:INK,'stroke-width':2.4});
+      [[ha,a],[hb,b],[hc,c]].forEach(function(p){ p[0].set(G.X(p[1]),G.Y(0)); });
+      var i1=integ(f0,a,c), i2=integ(f0,c,b), i=integ(f0,a,b);
+      out.innerHTML='<span style="color:'+BLUE+'">∫<sub>a</sub><sup>c</sup> f</span> = <b>'+fx(i1,3)+'</b> + <span style="color:#B45309">∫<sub>c</sub><sup>b</sup> f</span> = <b>'+fx(i2,3)+'</b> = <b>'+fx(i1+i2,3)+'</b><br><span class="math">∫<sub>a</sub><sup>b</sup> f</span> = <b>'+fx(i,3)+'</b> ✓ 같아요 (c가 a, b 밖이어도 성립해요: 방향이 바뀌면 부호도 바뀌어요)';
+    } else {
+      var f=function(x){ return x; }, g=function(x){ return 4-x*x; }, h=function(x){ return k*f(x)+g(x); };
+      G.signed(h,0,2,[],BLUE,ORG,.3);
+      G.curve(f,{stroke:BLUE,'stroke-width':1.6});
+      G.curve(g,{stroke:ORG,'stroke-width':1.6});
+      G.curve(h,{stroke:GRN,'stroke-width':3});
+      S('text',{x:B1.x+8,y:B1.y+14,'font-size':10.5,'font-weight':700,fill:BLUE,text:'f(x)=x'},ly.o);
+      S('text',{x:B1.x+8,y:B1.y+28,'font-size':10.5,'font-weight':700,fill:'#B45309',text:'g(x)=4−x²'},ly.o);
+      S('text',{x:B1.x+8,y:B1.y+42,'font-size':10.5,'font-weight':700,fill:GRN,text:'kf+g (초록)'},ly.o);
+      var I1=integ(f,0,2), I2=integ(g,0,2), I=integ(h,0,2);
+      out.innerHTML='<span class="math">∫<sub>0</sub><sup>2</sup> {k f + g}dx</span> = <b>'+fx(I,3)+'</b><br><span class="math">k∫f + ∫g</span> = '+fx(k,1)+'×'+fx(I1,2)+' + '+fx(I2,3)+' = <b>'+fx(k*I1+I2,3)+'</b> ✓';
+    }
+  }
+  var snap=function(v){ return cl(Math.round(v*4)/4,0,4.75); };
+  drag(svg,ha,function(x){ a=snap(G.ix(x)); upd(); });
+  drag(svg,hb,function(x){ b=snap(G.ix(x)); upd(); });
+  drag(svg,hc,function(x){ c=snap(G.ix(x)); upd(); });
+  build();
+});
+
+lab(29,'x축 아래 부분과 두 곡선 사이의 넓이를 직접 구해보세요',function(L){
+  var mode=0,b=3;
+  L.tabs(['y=f(x)와 x축','두 곡선 사이'],function(i){ mode=i; b=mode===0?3:1; sb.range(0,mode===0?3:1.5,b); upd(); });
+  var svg=L.svg(VB1,'넓이');
+  var G=null, ly=null;
+  var sb=L.slider(L.ctrl(),'끝점 b',0,3,0.1,3,function(v){ b=v; upd(); },function(v){ return fx(v,1); });
+  var out=L.out();
+  var f=function(x){ return x*x-2*x; };
+  function draw(){
+    ly.clear(); G.lay=ly.d;
+    if(mode===0){
+      G.signed(f,0,b,[2],BLUE,ORG,.35);
+      G.curve(f,{stroke:INK,'stroke-width':2.4},-0.5,3.5);
+      var ii=integ(f,0,b), aa=integ(function(x){ return Math.abs(f(x)); },0,b);
+      S('text',{x:B1.x+8,y:B1.y+14,'font-size':11,'font-weight':700,fill:INK,text:'f(x)=x²−2x'},ly.o);
+      out.innerHTML='<span class="math">∫<sub>0</sub><sup>b</sup> f(x)dx</span> = <b>'+fx(ii,3)+'</b> (x축 아래는 음수)<br>넓이 <span class="math">∫<sub>0</sub><sup>b</sup> |f(x)|dx</span> = <b>'+fx(aa,3)+'</b><br><span class="dim">'+(b>2?'f가 부호를 바꾸는 x=2 에서 구간을 나눠 |f|를 적분해요: 넓이 = ∫₀² (−f) + ∫₂ᵇ f':'x축 아래쪽(주황)은 −를 붙여서 넓이로 세요')+'</span>';
+    } else {
+      var p=function(x){ return x; }, q=function(x){ return x*x; };
+      var rts=roots(function(x){ return p(x)-q(x); },0,b);
+      var pts=[0].concat(rts.filter(function(r){ return r>1e-6&&r<b-1e-6; })).concat([b]), i;
+      for(i=0;i<pts.length-1;i++){
+        var m=(pts[i]+pts[i+1])/2, top=p(m)>q(m)?p:q, bot=p(m)>q(m)?q:p;
+        G.area(top,pts[i],pts[i+1],GRN,.32,bot,60);
+      }
+      G.curve(p,{stroke:BLUE},-0.5,3.5); G.curve(q,{stroke:ORG},-0.5,3.5);
+      S('text',{x:B1.x+8,y:B1.y+14,'font-size':11,'font-weight':700,fill:BLUE,text:'y = x'},ly.o);
+      S('text',{x:B1.x+8,y:B1.y+28,'font-size':11,'font-weight':700,fill:'#B45309',text:'y = x²'},ly.o);
+      var aa2=integ(function(x){ return Math.abs(p(x)-q(x)); },0,b);
+      out.innerHTML='두 곡선은 x=0, 1 에서 만나요. <span class="math">∫<sub>0</sub><sup>b</sup> |x − x²| dx</span> = <b>'+fx(aa2,3)+'</b>'+(Math.abs(b-1)<0.05?' <span class="ok">(= 1/6 ≈ 0.167)</span>':'')+'<br><span class="dim">'+(b>1?'x=1을 지나면 위·아래가 바뀌므로 구간을 나눠서 (위−아래)를 적분해요':'위쪽 함수 − 아래쪽 함수를 적분해요')+'</span>';
+    }
+  }
+  var gMode=-1;
+  function upd(){
+    if(gMode!==mode){
+      gMode=mode;
+      clr(svg);
+      var need=mode===0?{x:[-0.5,3.5],y:[-2,4]}:{x:[-0.5,1.8],y:[-0.3,2]};
+      G=Graph(svg,B1,need); ly=G.layers();
+    }
+    draw();
+  }
+  upd();
+});
+
+lab(30,'변위와 움직인 거리가 왜 다른지 ∫v 와 ∫|v| 로 확인해보세요',function(L){
+  var T=3, v=function(t){ return 3*t*t-6*t; }, xx=function(t){ return t*t*t-3*t*t; };
+  var svg=L.svg('0 0 320 214','속도와 거리');
+  var B={x:34,y:8,w:274,h:118};
+  var G=Graph(svg,B,{x:[0,4],y:[-5,26]},{tx:1,ty:5,xn:'t'}), ly=G.layers();
+  var st=L.slider(L.ctrl(),'t',0,4,0.02,3,function(val){ T=val; upd(); },function(val){ return fx(val,2); });
+  L.btn(L.ctrl(),'움직이기 ▶',false,function(){ L.play(0,4,6000,function(val){ T=val; st.set(val); upd(); }); });
+  var out=L.out();
+  var tx0=34,tx1=308,ty=176;
+  function TX(p){ return tx0+(p+6)/24*(tx1-tx0); }
+  function upd(){
+    ly.clear(); G.lay=ly.d;
+    G.signed(v,0,T,[2],BLUE,ORG,.35);
+    G.curve(v,{stroke:INK,'stroke-width':2.4},0,4,160);
+    G.dot(T,v(T),INK,5);
+    S('text',{x:B.x+8,y:B.y+14,'font-size':11,'font-weight':700,fill:INK,text:'v(t) = 3t² − 6t'},ly.o);
+    S('line',{x1:tx0,y1:ty,x2:tx1,y2:ty,stroke:'#8795A8','stroke-width':2},ly.o);
+    for(var i=-6;i<=18;i+=6){
+      S('line',{x1:TX(i),y1:ty-4,x2:TX(i),y2:ty+4,stroke:GRY},ly.o);
+      S('text',{x:TX(i),y:ty+16,'text-anchor':'middle','font-size':9,fill:GRY,text:ms(i)},ly.o);
+    }
+    var tr='M'+TX(0)+','+(ty-14), k, N=Math.max(2,Math.round(T*40));
+    for(k=0;k<=N;k++){ var tt=T*k/N; tr+=' L'+TX(xx(tt)).toFixed(1)+','+(ty-14-(k%2?0:0)); }
+    S('path',{d:tr,stroke:PINK,'stroke-width':2.4,fill:'none','stroke-opacity':.6},ly.o);
+    S('circle',{cx:TX(xx(T)),cy:ty,r:8,fill:INK,stroke:'#fff','stroke-width':2},ly.o);
+    S('circle',{cx:TX(0),cy:ty,r:4,fill:'none',stroke:GRN,'stroke-width':2},ly.o);
+    S('text',{x:TX(0),y:ty-9,'text-anchor':'middle','font-size':9,'font-weight':700,fill:GRN,text:'출발'},ly.o);
+    var disp=integ(v,0,T), dst=integ(function(t){ return Math.abs(v(t)); },0,T);
+    out.innerHTML='t='+fx(T,2)+' : 위치 <span class="math">x(t)=t³−3t²</span> = <b>'+fx(xx(T),2)+'</b><br>변위 <span class="math">∫<sub>0</sub><sup>t</sup> v dt</span> = <b>'+fx(disp,3)+'</b> (파랑 − 주황) · 움직인 거리 <span class="math">∫<sub>0</sub><sup>t</sup> |v| dt</span> = <b style="color:'+PINK+'">'+fx(dst,3)+'</b> (파랑 + 주황)'+(T>2?'<br><span class="dim">t=2 에서 방향을 바꿔(v=0) 되돌아오므로 거리 ≠ 변위</span>':'');
+  }
+  upd();
+});
+
+/* ================= 마운트 ================= */
+function findSection(n){ return document.getElementById('c'+n); }
+function mount(n){
+  var sec=findSection(n), spec=LABS['c'+n];
+  if(!sec||!spec||sec.__lab) return;
+  sec.__lab=true;
+  var fig=document.createElement('div');
+  var anchor=sec.querySelector('.def')||sec.querySelector('.concept-head');
+  anchor.parentNode.insertBefore(fig,anchor.nextSibling);
+  try{
+    var L=makeLab(fig,n,spec.badge);
+    spec.fn(L);
+    fig.classList.add('lab-ready');
+  }catch(err){
+    if(window.console) console.error('lab '+n,err);
+    if(fig.parentNode) fig.parentNode.removeChild(fig);
+  }
+}
+function start(){
+  var keys=Object.keys(LABS).map(function(k){ return +k.slice(1); });
+  window.__calcLabs=keys.length;
+  if(window.__CALC_EAGER||!('IntersectionObserver' in window)){ keys.forEach(mount); return; }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ mount(+e.target.id.slice(1)); io.unobserve(e.target); } });
+  },{rootMargin:'500px 0px'});
+  keys.forEach(function(n){ var s=findSection(n); if(s) io.observe(s); });
+}
+window.__mountLab=mount;
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start); else start();
+})();
+
+</script>
+</body>
+</html>
