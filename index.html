@@ -1110,18 +1110,25 @@ button:focus-visible, a:focus-visible, input:focus-visible, [role=button]:focus-
     <section class="concept" id="c26">
       <div class="concept-head"><span class="concept-num">26</span><h3>정적분</h3></div>
       <div class="def">
-        <p><b>구분구적법:</b> 도형을 여러 개의 간단한 도형으로 세분해 넓이·부피의 합을 구한 뒤, 그 합의 극한값으로 원래 도형의 넓이·부피를 구하는 방법.</p>
-        <p><b>정적분의 정의</b> — 함수 <span class="math">f</span>가 <span class="math">[a,b]</span>에서 연속일 때:</p>
-        <div class="formula"><span class="math">∫<sub>a</sub><sup>b</sup> f(x)dx = lim<sub>n→∞</sub> Σ<sub>k=1</sub><sup>n</sup> f(x<sub>k</sub>)Δx</span></div>
+        <p><b>정적분의 정의</b> — 닫힌구간 <span class="math">[a, b]</span>에서 연속인 함수 <span class="math">f(x)</span>에 대하여</p>
+        <ul>
+          <li><b>(ⅰ) <span class="math">f(x)≥0</span>일 때</b> — 함수 <span class="math">f(x)</span>의 그래프와 <span class="math">x</span>축 및 두 직선 <span class="math">x=a</span>, <span class="math">x=b</span>로 둘러싸인 도형의 넓이를 함수 <span class="math">f(x)</span>의 <span class="math">a</span>에서 <span class="math">b</span>까지의 <b>정적분</b>이라 하고, 기호로 <span class="math">∫<sub>a</sub><sup>b</sup> f(x)dx</span>와 같이 나타낸다.</li>
+          <li><b>(ⅱ) <span class="math">f(x)≤0</span>일 때</b> — 그래프와 <span class="math">x</span>축 및 두 직선 <span class="math">x=a</span>, <span class="math">x=b</span>로 둘러싸인 도형의 넓이를 <span class="math">S</span>라 할 때, <span class="math">−S</span>를 <span class="math">f(x)</span>의 <span class="math">a</span>에서 <span class="math">b</span>까지의 정적분이라 하고
+            <div class="formula"><span class="math">∫<sub>a</sub><sup>b</sup> f(x)dx = −S</span></div></li>
+        </ul>
+        <p><b>일반적인 정적분</b> — 닫힌구간 <span class="math">[a, b]</span>에서 연속인 함수 <span class="math">f(x)</span>의 그래프와 <span class="math">x</span>축 및 두 직선 <span class="math">x=a</span>, <span class="math">x=b</span>로 둘러싸인 도형 중에서 <span class="math">f(x)≥0</span>인 부분의 넓이를 <span class="math">S<sub>1</sub></span>, <span class="math">f(x)≤0</span>인 부분의 넓이를 <span class="math">S<sub>2</sub></span>라 할 때, 함수 <span class="math">f(x)</span>의 <span class="math">a</span>에서 <span class="math">b</span>까지의 정적분은</p>
+        <div class="formula"><span class="math">∫<sub>a</sub><sup>b</sup> f(x)dx = S<sub>1</sub> − S<sub>2</sub></span></div>
       </div>
       <details class="example">
         <summary>예제 풀어보기</summary>
         <div class="example-body">
-          <p><b>Q.</b> 구간 <span class="math">[0,1]</span>을 <span class="math">n</span>등분하여 <span class="math">f(x)=x²</span>의 정적분을 구분구적법의 정의로 나타내시오.</p>
-          <p><b>A.</b> <span class="math">Δx=1/n</span>, <span class="math">x<sub>k</sub>=k/n</span>이므로 <span class="math">∫<sub>0</sub><sup>1</sup> x² dx = lim<sub>n→∞</sub> Σ<sub>k=1</sub><sup>n</sup> (k/n)²·(1/n)</span> (실제 값은 #27의 미적분의 기본정리로 더 쉽게 계산: <span class="math">1/3</span>)</p>
+          <p><b>Q1.</b> 정적분 <span class="math">∫<sub>0</sub><sup>2</sup> (−x)dx</span>의 값을 구하시오.</p>
+          <p><b>A1.</b> <span class="math">[0,2]</span>에서 <span class="math">f(x)=−x≤0</span>이다. 그래프와 <span class="math">x</span>축, <span class="math">x=2</span>로 둘러싸인 도형은 직각삼각형이므로 <span class="math">S = ½·2·2 = 2</span>. 따라서 <span class="math">∫<sub>0</sub><sup>2</sup> (−x)dx = −S = −2</span></p>
+          <p><b>Q2.</b> 정적분 <span class="math">∫<sub>0</sub><sup>4</sup> (x−1)dx</span>의 값을 구하시오.</p>
+          <p><b>A2.</b> <span class="math">y=x−1</span>은 <span class="math">x=1</span>에서 <span class="math">x</span>축과 만난다. <span class="math">[0,1]</span>에서는 <span class="math">f(x)≤0</span>이므로 <span class="math">S<sub>2</sub> = ½·1·1 = ½</span>, <span class="math">[1,4]</span>에서는 <span class="math">f(x)≥0</span>이므로 <span class="math">S<sub>1</sub> = ½·3·3 = 9/2</span>. 따라서 <span class="math">∫<sub>0</sub><sup>4</sup> (x−1)dx = S<sub>1</sub>−S<sub>2</sub> = 9/2 − 1/2 = 4</span></p>
         </div>
       </details>
-      <div class="tip">정적분 값은 함수가 구간에서 음수이면 <b>음수</b>가 나올 수 있다. "정적분 = 넓이"는 <span class="math">f(x)≥0</span>일 때만 성립하는 특수한 경우이며, 일반적인 넓이 계산은 #29에서처럼 절댓값을 취해야 한다.</div>
+      <div class="tip">정적분은 <b>부호를 가진 넓이</b>다. <span class="math">f(x)≤0</span>인 부분은 <b>빼서</b> 계산하므로 정적분 값은 음수나 0이 될 수도 있다. 반면 실제 도형의 넓이는 <span class="math">S<sub>1</sub>+S<sub>2</sub></span>이다. 그래프가 <span class="math">x</span>축 위아래에 걸쳐 있으면 둘을 구분해야 하며, 이는 #29에서 절댓값 <span class="math">∫<sub>a</sub><sup>b</sup> |f(x)|dx</span>로 다룬다.</div>
     </section>
 
     <section class="concept" id="c27">
@@ -2340,30 +2347,51 @@ lab(25,'계수를 바꿔 적분하고, 미분으로 다시 확인해보세요',f
   upd();
 });
 
-lab(26,'직사각형 개수 n을 늘려 넓이의 극한(정적분)에 다가가보세요',function(L){
+lab(26,'구간 [a, b]를 바꾸며 정적분 = S₁ − S₂ 를 확인해보세요',function(L){
   var FN=[
-    {n:'x²',f:function(x){ return x*x; },I:1/3,dy:[-0.2,1.2],s:'x²'},
-    {n:'x³',f:function(x){ return x*x*x; },I:1/4,dy:[-0.2,1.2],s:'x³'},
-    {n:'x²−1/2',f:function(x){ return x*x-0.5; },I:1/3-0.5,dy:[-0.7,0.7],s:'x²−1/2'}
-  ], fi=0, n=4;
+    {n:'(ⅰ) f ≥ 0',f:function(x){ return 0.5*(x-2)*(x-2)+1; },dx:[-0.5,5],dy:[-1,6],lo:0,hi:4.5,a:0.5,b:4,s:'f(x) = ½(x−2)² + 1'},
+    {n:'(ⅱ) f ≤ 0',f:function(x){ return -(0.5*(x-2)*(x-2)+1); },dx:[-0.5,5],dy:[-6,1],lo:0,hi:4.5,a:0.5,b:4,s:'f(x) = −½(x−2)² − 1'},
+    {n:'일반: S₁ − S₂',f:function(x){ return 0.5*(x+1)*(x-2)*(x-4); },dx:[-1.5,4.5],dy:[-5,5],lo:-1.5,hi:4.5,a:-0.5,b:3.5,s:'f(x) = ½(x+1)(x−2)(x−4)'}
+  ], fi=0, a=0.5, b=4;
   L.tabs(FN.map(function(e){ return e.n; }),function(i){ fi=i; build(); });
-  var svg=L.svg(VB1,'구분구적법');
+  var svg=L.svg(VB1,'정적분의 정의');
   var sg=S('g',{},svg), G, ly;
   var cc=L.ctrl();
-  var sn=L.slider(cc,'n',1,60,1,4,function(v){ n=v; upd(); });
-  L.btn(cc,'n 늘리기 ▶',false,function(){ L.play(1,60,6000,function(v){ n=Math.round(v); sn.set(n); upd(); }); });
+  var sa=L.slider(cc,'a',0,4.5,0.1,0.5,function(v){ a=Math.min(v,b-0.2); if(a!==v) sa.set(a); upd(); },function(v){ return fx(v,1); });
+  var sb=L.slider(cc,'b',0,4.5,0.1,4,function(v){ b=Math.max(v,a+0.2); if(b!==v) sb.set(b); upd(); },function(v){ return fx(v,1); });
+  L.btn(cc,'b 늘리기 ▶',false,function(){
+    var e=FN[fi]; b=Math.min(b,a+0.2); sb.set(b);
+    L.play(a+0.2,e.hi,4500,function(v){ b=Math.round(v*10)/10; sb.set(b); upd(); });
+  });
   var out=L.out();
-  function build(){ clr(sg); var e=FN[fi]; G=Graph(sg,B1,{x:[-0.2,1.2],y:e.dy}); ly=G.layers(); upd(); }
+  function build(){
+    clr(sg); var e=FN[fi];
+    G=Graph(sg,B1,{x:e.dx,y:e.dy}); ly=G.layers();
+    a=e.a; b=e.b;
+    sa.range(e.lo,e.hi,a); sb.range(e.lo,e.hi,b);
+    upd();
+  }
+  function lbl(x,t,up){
+    S('text',{x:G.X(x),y:G.Y(0)+(up?-7:15),'text-anchor':'middle','font-size':12,'font-weight':700,fill:INK,stroke:'#fff','stroke-width':3,'paint-order':'stroke',text:t},ly.o);
+  }
   function upd(){
     var e=FN[fi]; ly.clear(); G.lay=ly.d;
-    var i,S_=0,w=1/n;
-    for(i=1;i<=n;i++){
-      var xr=i*w, y=e.f(xr), x0=G.X((i-1)*w), x1=G.X(xr), y0=G.Y(0), y1=G.Y(y);
-      S_+=y*w;
-      S('rect',{x:x0,y:Math.min(y0,y1),width:x1-x0,height:Math.abs(y1-y0),fill:y>=0?BLUE:ORG,'fill-opacity':.3,stroke:y>=0?BLUE:ORG,'stroke-width':n>30?0.4:1},ly.d);
-    }
-    G.curve(e.f,{stroke:INK,'stroke-width':2.2},0,1,120);
-    out.innerHTML='n = <b>'+n+'</b> · 직사각형 넓이의 합 <span class="math">S<sub>n</sub> = Σ f(k/n)·(1/n)</span> = <b>'+fx(S_,4)+'</b><br>정적분 <span class="math">∫<sub>0</sub><sup>1</sup> '+e.s+' dx</span> = <b>'+fx(e.I,4)+'</b> · 차이 <b>'+fx(Math.abs(S_-e.I),4)+'</b><br><span class="dim">n→∞ 일 때 S<sub>n</sub>의 극한이 정적분이에요.</span>';
+    var rts=roots(e.f,a,b), pts=[a], k, S1=0, S2=0;
+    rts.forEach(function(r){ if(r>a+1e-9&&r<b-1e-9) pts.push(r); }); pts.push(b);
+    for(k=0;k<pts.length-1;k++){ var v=integ(e.f,pts[k],pts[k+1]); if(v>=0) S1+=v; else S2-=v; }
+    G.signed(e.f,a,b,rts,BLUE,ORG,.35);
+    G.curve(e.f,{stroke:INK,'stroke-width':2.4});
+    G.line(a,0,a,e.f(a),{stroke:GRY,'stroke-width':1.2,'stroke-dasharray':'3 3'});
+    G.line(b,0,b,e.f(b),{stroke:GRY,'stroke-width':1.2,'stroke-dasharray':'3 3'});
+    G.dot(a,0,INK,4); G.dot(b,0,INK,4);
+    lbl(a,'a',fi===1); lbl(b,'b',fi===1);
+    var I=S1-S2, note;
+    if(fi===0) note='<span class="math">f(x)≥0</span>이므로 정적분은 <b>넓이 그 자체</b>예요.';
+    else if(fi===1) note='<span class="math">f(x)≤0</span>이므로 정적분은 넓이 <span class="math">S</span>에 <b>마이너스</b>를 붙인 <span class="math">−S</span>예요.';
+    else if(Math.abs(I)<0.005) note='<b>S₁ = S₂</b> 라서 위아래 넓이가 상쇄되어 정적분이 0이에요.';
+    else if(I>0) note='파랑 넓이가 더 커서 정적분이 <b>양수</b>예요.';
+    else note='주황 넓이가 더 커서 정적분이 <b>음수</b>예요.';
+    out.innerHTML='<span class="math">'+e.s+'</span><br><span style="color:'+BLUE+';font-weight:700">S<sub>1</sub>(파랑, f≥0)</span> = <b>'+fx(S1,3)+'</b> · <span style="color:'+ORG+';font-weight:700">S<sub>2</sub>(주황, f≤0)</span> = <b>'+fx(S2,3)+'</b><br><span class="math">∫<sub>'+fx(a,1)+'</sub><sup>'+fx(b,1)+'</sup> f(x)dx = S<sub>1</sub> − S<sub>2</sub></span> = <b>'+fx(I,3)+'</b><br><span class="dim">'+note+'</span>';
   }
   build();
 });
@@ -2553,6 +2581,37 @@ window.__mountLab=mount;
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start); else start();
 })();
 
+</script>
+<script>
+/* 목차·바로가기 이동 보정: 인터랙티브 그림이 스크롤 도중 지연 생성되며 페이지 높이가 바뀌어
+   목표 지점에 못 미치고 멈추는 문제를 막기 위해, 이동 전에 모든 그림을 먼저 생성한 뒤 스크롤한다. */
+(function(){
+  'use strict';
+  function mountAll(){
+    var L=window.__LABS||{};
+    Object.keys(L).forEach(function(k){ try{ window.__mountLab(+k.slice(1)); }catch(e){} });
+  }
+  function target(hash){
+    if(!hash||hash.length<2) return null;
+    var id; try{ id=decodeURIComponent(hash.slice(1)); }catch(e){ id=hash.slice(1); }
+    return document.getElementById(id);
+  }
+  function go(el){ mountAll(); el.scrollIntoView({block:'start'}); }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href^="#"]');
+    if(!a||e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey) return;
+    var el=target(a.getAttribute('href'));
+    if(!el) return;
+    e.preventDefault();
+    go(el);
+    try{ history.replaceState(null,'',a.getAttribute('href')); }catch(_){}
+  });
+  /* 주소에 #c26 처럼 해시가 붙은 채로 열렸을 때도 정확히 이동 */
+  window.addEventListener('load',function(){
+    var el=target(location.hash);
+    if(el) requestAnimationFrame(function(){ mountAll(); el.scrollIntoView({block:'start',behavior:'instant'}); });
+  });
+})();
 </script>
 </body>
 </html>
